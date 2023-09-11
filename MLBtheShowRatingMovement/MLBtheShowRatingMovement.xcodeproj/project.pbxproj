@@ -16,6 +16,7 @@
 		044404682AAF049E00728DA4 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 044404672AAF049E00728DA4 /* Realm */; };
 		0444046A2AAF049E00728DA4 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 044404692AAF049E00728DA4 /* RealmSwift */; };
 		0444046D2AAF069500728DA4 /* PlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444046C2AAF069500728DA4 /* PlayerModel.swift */; };
+		044404702AAF0EFA00728DA4 /* UpdateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444046F2AAF0EFA00728DA4 /* UpdateModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		0444045E2AAF025600728DA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		044404602AAF025600728DA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0444046C2AAF069500728DA4 /* PlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerModel.swift; sourceTree = "<group>"; };
+		0444046F2AAF0EFA00728DA4 /* UpdateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +80,7 @@
 			isa = PBXGroup;
 			children = (
 				0444046C2AAF069500728DA4 /* PlayerModel.swift */,
+				0444046F2AAF0EFA00728DA4 /* UpdateModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -164,6 +167,7 @@
 				044404532AAF025400728DA4 /* AppDelegate.swift in Sources */,
 				0444046D2AAF069500728DA4 /* PlayerModel.swift in Sources */,
 				044404552AAF025400728DA4 /* SceneDelegate.swift in Sources */,
+				044404702AAF0EFA00728DA4 /* UpdateModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
