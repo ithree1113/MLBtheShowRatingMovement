@@ -15,6 +15,7 @@
 		0444045F2AAF025600728DA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0444045D2AAF025600728DA4 /* LaunchScreen.storyboard */; };
 		044404682AAF049E00728DA4 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 044404672AAF049E00728DA4 /* Realm */; };
 		0444046A2AAF049E00728DA4 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 044404692AAF049E00728DA4 /* RealmSwift */; };
+		0444046D2AAF069500728DA4 /* PlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444046C2AAF069500728DA4 /* PlayerModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +27,7 @@
 		0444045B2AAF025600728DA4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0444045E2AAF025600728DA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		044404602AAF025600728DA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		0444046C2AAF069500728DA4 /* PlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,14 +63,23 @@
 			isa = PBXGroup;
 			children = (
 				044404522AAF025400728DA4 /* AppDelegate.swift */,
+				0444045B2AAF025600728DA4 /* Assets.xcassets */,
+				044404602AAF025600728DA4 /* Info.plist */,
+				0444045D2AAF025600728DA4 /* LaunchScreen.storyboard */,
+				044404582AAF025400728DA4 /* Main.storyboard */,
+				0444046B2AAF067900728DA4 /* Model */,
 				044404542AAF025400728DA4 /* SceneDelegate.swift */,
 				044404562AAF025400728DA4 /* ViewController.swift */,
-				044404582AAF025400728DA4 /* Main.storyboard */,
-				0444045B2AAF025600728DA4 /* Assets.xcassets */,
-				0444045D2AAF025600728DA4 /* LaunchScreen.storyboard */,
-				044404602AAF025600728DA4 /* Info.plist */,
 			);
 			path = MLBtheShowRatingMovement;
+			sourceTree = "<group>";
+		};
+		0444046B2AAF067900728DA4 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0444046C2AAF069500728DA4 /* PlayerModel.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -151,6 +162,7 @@
 			files = (
 				044404572AAF025400728DA4 /* ViewController.swift in Sources */,
 				044404532AAF025400728DA4 /* AppDelegate.swift in Sources */,
+				0444046D2AAF069500728DA4 /* PlayerModel.swift in Sources */,
 				044404552AAF025400728DA4 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
