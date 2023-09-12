@@ -11,6 +11,7 @@ class ListViewController: UIViewController {
     
     let viewModel: ListViewModelProtocol
     
+    // MARK: Init
     init(viewModel: ListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
@@ -21,7 +22,12 @@ class ListViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
+    // MARK: UI
+    
+    // MARK: Action
 }
