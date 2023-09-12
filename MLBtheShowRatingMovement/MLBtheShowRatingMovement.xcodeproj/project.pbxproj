@@ -17,6 +17,7 @@
 		0444046D2AAF069500728DA4 /* PlayerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444046C2AAF069500728DA4 /* PlayerModel.swift */; };
 		044404702AAF0EFA00728DA4 /* UpdateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444046F2AAF0EFA00728DA4 /* UpdateModel.swift */; };
 		044404722AAF170E00728DA4 /* UpdateHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044404712AAF170E00728DA4 /* UpdateHistory.swift */; };
+		044404752AAF1D4000728DA4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044404742AAF1D4000728DA4 /* Date+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		0444046C2AAF069500728DA4 /* PlayerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerModel.swift; sourceTree = "<group>"; };
 		0444046F2AAF0EFA00728DA4 /* UpdateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateModel.swift; sourceTree = "<group>"; };
 		044404712AAF170E00728DA4 /* UpdateHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateHistory.swift; sourceTree = "<group>"; };
+		044404742AAF1D4000728DA4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +68,7 @@
 			children = (
 				044404522AAF025400728DA4 /* AppDelegate.swift */,
 				0444045B2AAF025600728DA4 /* Assets.xcassets */,
+				044404732AAF1C4400728DA4 /* Extension */,
 				044404602AAF025600728DA4 /* Info.plist */,
 				0444045D2AAF025600728DA4 /* LaunchScreen.storyboard */,
 				0444046B2AAF067900728DA4 /* Model */,
@@ -83,6 +86,14 @@
 				0444046F2AAF0EFA00728DA4 /* UpdateModel.swift */,
 			);
 			path = Model;
+			sourceTree = "<group>";
+		};
+		044404732AAF1C4400728DA4 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				044404742AAF1D4000728DA4 /* Date+Extension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -166,6 +177,7 @@
 				044404722AAF170E00728DA4 /* UpdateHistory.swift in Sources */,
 				044404532AAF025400728DA4 /* AppDelegate.swift in Sources */,
 				0444046D2AAF069500728DA4 /* PlayerModel.swift in Sources */,
+				044404752AAF1D4000728DA4 /* Date+Extension.swift in Sources */,
 				044404552AAF025400728DA4 /* SceneDelegate.swift in Sources */,
 				044404702AAF0EFA00728DA4 /* UpdateModel.swift in Sources */,
 			);
