@@ -19,6 +19,7 @@
 		044404752AAF1D4000728DA4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044404742AAF1D4000728DA4 /* Date+Extension.swift */; };
 		0444047C2AB03B0A00728DA4 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444047B2AB03B0A00728DA4 /* ListViewController.swift */; };
 		0444047F2AB0616100728DA4 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444047E2AB0616100728DA4 /* ListViewModel.swift */; };
+		044404822AB070F800728DA4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 044404812AB070F800728DA4 /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				044404822AB070F800728DA4 /* SnapKit in Frameworks */,
 				0444046A2AAF049E00728DA4 /* RealmSwift in Frameworks */,
 				044404682AAF049E00728DA4 /* Realm in Frameworks */,
 			);
@@ -134,6 +136,7 @@
 			packageProductDependencies = (
 				044404672AAF049E00728DA4 /* Realm */,
 				044404692AAF049E00728DA4 /* RealmSwift */,
+				044404812AB070F800728DA4 /* SnapKit */,
 			);
 			productName = MLBtheShowRatingMovement;
 			productReference = 0444044F2AAF025400728DA4 /* MLBtheShowRatingMovement.app */;
@@ -165,6 +168,7 @@
 			mainGroup = 044404462AAF025400728DA4;
 			packageReferences = (
 				044404662AAF049E00728DA4 /* XCRemoteSwiftPackageReference "realm-swift" */,
+				044404802AB070F800728DA4 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			productRefGroup = 044404502AAF025400728DA4 /* Products */;
 			projectDirPath = "";
@@ -421,6 +425,14 @@
 				minimumVersion = 10.42.1;
 			};
 		};
+		044404802AB070F800728DA4 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -433,6 +445,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 044404662AAF049E00728DA4 /* XCRemoteSwiftPackageReference "realm-swift" */;
 			productName = RealmSwift;
+		};
+		044404812AB070F800728DA4 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 044404802AB070F800728DA4 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
