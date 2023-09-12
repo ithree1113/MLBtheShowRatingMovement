@@ -18,10 +18,23 @@ struct UpdateModel {
 struct UpdateItem {
     let name: AttrName
     let value: Int
-    let diff: Diff
+    let diff: String
     
     func getInitValue() -> Int {
-        return value + diff.getReverse()
+        return value + getReverse()
+    }
+    
+    private func getReverse() -> Int {
+        let prefix = diff.prefix(1)
+        
+        switch prefix {
+        case "+":
+            return 0 - (Int(diff.dropFirst(1)) ?? 0)
+        case "-":
+            return (Int(diff.dropFirst(1)) ?? 0)
+        default:
+            return 0
+        }
     }
 }
 
@@ -57,21 +70,4 @@ enum AttrName: String {
     case ctrl
     case vel
     case brk
-}
-
-struct Diff {
-    let text: String
-    
-    func getReverse() -> Int {
-        let prefix = text.prefix(1)
-        
-        switch prefix {
-        case "+":
-            return 0 - (Int(text.dropFirst(1)) ?? 0)
-        case "-":
-            return (Int(text.dropFirst(1)) ?? 0)
-        default:
-            return 0
-        }
-    }
 }
