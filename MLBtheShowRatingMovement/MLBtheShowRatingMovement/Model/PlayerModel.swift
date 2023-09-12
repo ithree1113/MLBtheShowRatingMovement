@@ -42,9 +42,20 @@ class PlayerModel: Object {
     @Persisted var ctrl = List<RatingRecord>()
     @Persisted var vel = List<RatingRecord>()
     @Persisted var brk = List<RatingRecord>()
+    
+    convenience init(name: String) {
+        self.init()
+        self.name = name
+    }
 }
 
 class RatingRecord: EmbeddedObject {
     @Persisted var date: Date
     @Persisted var value: Int
+    
+    convenience init(date: Date, value: Int) {
+        self.init()
+        self.date = date
+        self.value = value
+    }
 }

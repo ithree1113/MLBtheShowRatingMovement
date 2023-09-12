@@ -11,7 +11,8 @@ import RealmSwift
 class LastUpdate: Object {
     @Persisted var date: Date
     
-    init(date: Date) {
+    convenience init(date: Date) {
+        self.init()
         self.date = date
     }
 }
