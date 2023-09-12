@@ -18,8 +18,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
-        let viewModel = ReseltViewModel()
-        window.rootViewController = UINavigationController(rootViewController: ReseltViewController(viewModel: viewModel))
+        let viewModel = ListViewModel()
+        window.rootViewController = UINavigationController(rootViewController: ListViewController(viewModel: viewModel))
         self.window = window
         window.makeKeyAndVisible()
     }

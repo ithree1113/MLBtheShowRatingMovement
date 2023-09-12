@@ -1,5 +1,5 @@
 //
-//  ReseltViewModel.swift
+//  ListViewModel.swift
 //  MLBtheShowRatingMovement
 //
 //  Created by eddiecheng on 2023/9/12.
@@ -8,12 +8,12 @@
 import Foundation
 import RealmSwift
 
-protocol ReseltViewModelProtocol {
+protocol ListViewModelProtocol {
     
     func mergeUpdateHistoryIntoDatabase()
 }
 
-class ReseltViewModel: ReseltViewModelProtocol {
+class ListViewModel: ListViewModelProtocol {
     
     private let realm = try! Realm()
     private let initDate = Date(string: "2023/04/21")!

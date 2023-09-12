@@ -1,5 +1,5 @@
 //
-//  ReseltViewController.swift
+//  ListViewController.swift
 //  MLBtheShowRatingMovement
 //
 //  Created by ithree1113 on 2023/9/12.
@@ -7,11 +7,11 @@
 
 import UIKit
 
-class ReseltViewController: UIViewController {
+class ListViewController: UIViewController {
     
-    let viewModel: ReseltViewModelProtocol
+    let viewModel: ListViewModelProtocol
     
-    init(viewModel: ReseltViewModelProtocol) {
+    init(viewModel: ListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
         viewModel.mergeUpdateHistoryIntoDatabase()
