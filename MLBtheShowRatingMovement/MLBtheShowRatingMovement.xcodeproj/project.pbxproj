@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		044404532AAF025400728DA4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044404522AAF025400728DA4 /* AppDelegate.swift */; };
 		044404552AAF025400728DA4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044404542AAF025400728DA4 /* SceneDelegate.swift */; };
-		044404572AAF025400728DA4 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044404562AAF025400728DA4 /* ViewController.swift */; };
 		0444045C2AAF025600728DA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0444045B2AAF025600728DA4 /* Assets.xcassets */; };
 		0444045F2AAF025600728DA4 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0444045D2AAF025600728DA4 /* LaunchScreen.storyboard */; };
 		044404682AAF049E00728DA4 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = 044404672AAF049E00728DA4 /* Realm */; };
@@ -18,13 +17,13 @@
 		044404702AAF0EFA00728DA4 /* UpdateModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444046F2AAF0EFA00728DA4 /* UpdateModel.swift */; };
 		044404722AAF170E00728DA4 /* UpdateHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044404712AAF170E00728DA4 /* UpdateHistory.swift */; };
 		044404752AAF1D4000728DA4 /* Date+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044404742AAF1D4000728DA4 /* Date+Extension.swift */; };
+		0444047C2AB03B0A00728DA4 /* ReseltViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444047B2AB03B0A00728DA4 /* ReseltViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		0444044F2AAF025400728DA4 /* MLBtheShowRatingMovement.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MLBtheShowRatingMovement.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		044404522AAF025400728DA4 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		044404542AAF025400728DA4 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		044404562AAF025400728DA4 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		0444045B2AAF025600728DA4 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		0444045E2AAF025600728DA4 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		044404602AAF025600728DA4 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -32,6 +31,7 @@
 		0444046F2AAF0EFA00728DA4 /* UpdateModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateModel.swift; sourceTree = "<group>"; };
 		044404712AAF170E00728DA4 /* UpdateHistory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateHistory.swift; sourceTree = "<group>"; };
 		044404742AAF1D4000728DA4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
+		0444047B2AB03B0A00728DA4 /* ReseltViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReseltViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,7 +73,7 @@
 				0444045D2AAF025600728DA4 /* LaunchScreen.storyboard */,
 				0444046B2AAF067900728DA4 /* Model */,
 				044404542AAF025400728DA4 /* SceneDelegate.swift */,
-				044404562AAF025400728DA4 /* ViewController.swift */,
+				0444047A2AB03ADF00728DA4 /* View */,
 			);
 			path = MLBtheShowRatingMovement;
 			sourceTree = "<group>";
@@ -94,6 +94,14 @@
 				044404742AAF1D4000728DA4 /* Date+Extension.swift */,
 			);
 			path = Extension;
+			sourceTree = "<group>";
+		};
+		0444047A2AB03ADF00728DA4 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0444047B2AB03B0A00728DA4 /* ReseltViewController.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -173,9 +181,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				044404572AAF025400728DA4 /* ViewController.swift in Sources */,
 				044404722AAF170E00728DA4 /* UpdateHistory.swift in Sources */,
 				044404532AAF025400728DA4 /* AppDelegate.swift in Sources */,
+				0444047C2AB03B0A00728DA4 /* ReseltViewController.swift in Sources */,
 				0444046D2AAF069500728DA4 /* PlayerModel.swift in Sources */,
 				044404752AAF1D4000728DA4 /* Date+Extension.swift in Sources */,
 				044404552AAF025400728DA4 /* SceneDelegate.swift in Sources */,
