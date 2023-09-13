@@ -10,13 +10,20 @@ import RealmSwift
 
 protocol ListViewModelProtocol {
     
+    var listCount: Int { get }
     func mergeUpdateHistoryIntoDatabase()
+    func getPlayer(at index: Int) -> PlayerModel?
 }
 
 class ListViewModel: ListViewModelProtocol {
     
+    var listCount: Int {
+        players.count
+    }
+    var listUpdated: (() -> ())?
     private let realm = try! Realm()
     private let initDate = Date(string: "2023/04/21")!
+    private var players: [PlayerModel] = []
     
     func mergeUpdateHistoryIntoDatabase() {
         var lastUpdate = realm.objects(LastUpdate.self)
@@ -45,6 +52,11 @@ class ListViewModel: ListViewModelProtocol {
                     updatePlayerModel(playerModels[0], at: date, from: update)
                 }
             }
+    }
+    
+    func getPlayer(at index: Int) -> PlayerModel? {
+        guard index < listCount else { return nil }
+        return players[index]
     }
     
     private func createPlayerModel(at date: Date, from update: UpdateModel) {
