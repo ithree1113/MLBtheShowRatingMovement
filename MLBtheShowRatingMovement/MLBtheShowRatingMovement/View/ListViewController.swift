@@ -57,7 +57,22 @@ class ListViewController: UIViewController {
     
     // MARK: Action
     @objc private func addingFilterBtnDidTap() {
-        viewModel.addFilter(field: "rating", value: 1)
+        let alert = UIAlertController(title: "Movement Filter", message: nil, preferredStyle: .alert)
+        alert.addTextField { $0.placeholder = "Attribute" }
+        alert.addTextField { $0.placeholder = "Delta" }
+        
+        let cancalAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] action in
+            self.dismiss(animated: true)
+        }
+        
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] action in
+            let attr = alert.textFields?[0].text ?? ""
+            let delta = Int(alert.textFields?[1].text ?? "") ?? 0
+            viewModel.addFilter(field: attr, delta: delta)
+        })
+        alert.addAction(cancalAction)
+        alert.addAction(confirmAction)
+        present(alert, animated: true)
     }
 }
 
