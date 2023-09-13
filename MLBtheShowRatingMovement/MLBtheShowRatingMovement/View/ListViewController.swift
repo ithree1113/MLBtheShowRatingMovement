@@ -10,7 +10,7 @@ import SnapKit
 
 class ListViewController: UIViewController {
     
-    let viewModel: ListViewModelProtocol
+    var viewModel: ListViewModelProtocol
     
     lazy var addingFilterBtn: UIBarButtonItem = {
         let afb = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addingFilterBtnDidTap))
@@ -40,6 +40,7 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initLayout()
+        viewModel.listUpdated = { [unowned self] in tableView.reloadData() }
     }
     
     // MARK: UI
@@ -56,6 +57,7 @@ class ListViewController: UIViewController {
     
     // MARK: Action
     @objc private func addingFilterBtnDidTap() {
+        viewModel.addFilter(field: "rating", value: 1)
     }
 }
 

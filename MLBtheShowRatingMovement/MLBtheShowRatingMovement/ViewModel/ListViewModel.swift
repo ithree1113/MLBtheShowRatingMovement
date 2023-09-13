@@ -11,8 +11,11 @@ import RealmSwift
 protocol ListViewModelProtocol {
     
     var listCount: Int { get }
+    var listUpdated: (() -> ())? { get set }
+    
     func mergeUpdateHistoryIntoDatabase()
     func getPlayer(at index: Int) -> PlayerModel?
+    func addFilter(field: String, value: Int)
 }
 
 class ListViewModel: ListViewModelProtocol {
@@ -52,6 +55,19 @@ class ListViewModel: ListViewModelProtocol {
                     updatePlayerModel(playerModels[0], at: date, from: update)
                 }
             }
+    }
+    
+    func addFilter(field: String, value: Int) {
+        players = realm.objects(PlayerModel.self).filter { player in
+            guard field.count > 0,
+            let attribute = player.value(forKey: field) as? List<RatingRecord> else { return false }
+            if value >= 0 {
+                return (attribute.last!.value - attribute.first!.value) >= value
+            } else  {
+                return (attribute.last!.value - attribute.first!.value) <= value
+            }
+        }
+        listUpdated?()
     }
     
     func getPlayer(at index: Int) -> PlayerModel? {
