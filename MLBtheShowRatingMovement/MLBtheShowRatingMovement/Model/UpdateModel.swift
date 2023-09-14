@@ -10,8 +10,6 @@ import Foundation
 
 struct UpdateModel {
     let name: String
-    let newRating: Int
-    let oldRating: Int
     let updateItems: [UpdateItem]
 }
 
