@@ -37,8 +37,13 @@ let updateHistory: [(Date, [UpdateModel])] = []
      
      guard let html = String(data: data, encoding: .utf8) else { return }
      let document = try SwiftSoup.parse(html)
-     let link: Element = try document.select("tr").first()!
+     let links: [Element] = document.select("tr").array().filter{ $0.children().count == 6 }.filter{ try $0.child(0).text() != "Player" }
  }
+ 
+ let dateFormatter = DateFormatter()
+ dateFormatter.dateFormat = "MMMM dd, yyyy"
+ let dateString = try document.select("h2")[1].text()
+ let date = dateFormatter.date(from: dateString)
  
  po try document.select("tr")[1]
  Element <tr>
