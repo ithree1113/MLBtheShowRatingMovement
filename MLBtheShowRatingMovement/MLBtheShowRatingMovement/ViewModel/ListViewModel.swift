@@ -7,6 +7,7 @@
 
 import Foundation
 import RealmSwift
+import SwiftSoup
 
 protocol ListViewModelProtocol {
     
@@ -27,6 +28,11 @@ class ListViewModel: ListViewModelProtocol {
     private let realm = try! Realm()
     private let initDate = Date(string: "2023/04/21")!
     private var players: [Player] = []
+    private let dateFormatter: DateFormatter = {
+        let df = DateFormatter()
+        df.dateFormat = "MMMM dd, yyyy"
+        return df
+    }()
     
     func fetchWebDataAndWriteIntoDatabase() {
         let updatedList = realm.objects(UpdatedList.self)
@@ -35,6 +41,15 @@ class ListViewModel: ListViewModelProtocol {
                 guard !updatedList.contains(where: { $0.urlString == urlString }) else {
                     return
                 }
+                Task {
+                    do {
+                        let rawData = try await fetchWebData(urlString: urlString)
+                        let updateElements = try createUpdateElement(from: rawData)
+                        
+                    } catch {
+                        print(error)
+                    }
+                }                
             }
         
 //        updateHistory
@@ -99,5 +114,39 @@ class ListViewModel: ListViewModelProtocol {
                 attribute.append(RatingRecord(date: date, value: Int(updatedAttribute.value)!))
             })
         }
+    }
+    
+    private func fetchWebData(urlString: String) async throws -> (Date, [Element]) {
+        let url: URL = URLComponents(string: urlString)!.url!
+        let (data, _) = try await URLSession.shared.data(from: url)
+        
+        guard let html = String(data: data, encoding: .utf8) else { return (Date(), []) }
+        let document = try SwiftSoup.parse(html)
+        let rawData = try document.select("tr").array().filter{ $0.children().count == 6 }.filter{ try $0.child(0).text() != "Player" }.filter{ try $0.child(5).text().count != 0 }
+        let dateString = try document.select("h2")[1].text()
+        return (dateFormatter.date(from: dateString)!, rawData)
+    }
+    
+    private func createUpdateElement(from data: (Date, [Element])) throws -> [UpdateElement] {
+        var result: [UpdateElement] = []
+        for element in data.1 {
+            var updatedAttributes: [UpdatedAttribute] = []
+            let updatedAttributeRawData = try element.child(5).text().components(separatedBy: [" "])
+            for (index, rawDataString) in updatedAttributeRawData.enumerated() {
+                switch (index % 3) {
+                case 0:
+                    break
+                case 1:
+                    break
+                case 2:
+                    break
+                default:
+                    break
+                }
+            }
+            
+        }
+        
+        return result
     }
 }
