@@ -23,16 +23,7 @@ struct UpdatedAttribute {
     }
     
     private func getReverse() -> Int {
-        let prefix = diff.prefix(1)
-        
-        switch prefix {
-        case "+":
-            return 0 - (Int(diff.dropFirst(1)) ?? 0)
-        case "-":
-            return (Int(diff.dropFirst(1)) ?? 0)
-        default:
-            return 0
-        }
+        return -Int(diff)!
     }
 }
 
