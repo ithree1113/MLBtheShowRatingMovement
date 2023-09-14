@@ -1,5 +1,5 @@
 //
-//  UpdateHistory.swift
+//  UpdateList.swift
 //  MLBtheShowRatingMovement
 //
 //  Created by ithree1113 on 2023/9/11.
@@ -8,16 +8,16 @@
 import Foundation
 import RealmSwift
 
-class LastUpdate: Object {
-    @Persisted var date: Date
+class UpdatedList: Object {
+    @Persisted var urlString: String
     
-    convenience init(date: Date) {
+    convenience init(urlString: String) {
         self.init()
-        self.date = date
+        self.urlString = urlString
     }
 }
 
-let updateHistory: [(Date, [UpdateModel])] = []
+let updateList: [String] = []
 /*
  override func viewDidLoad() {
      super.viewDidLoad()
