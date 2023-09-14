@@ -29,7 +29,7 @@ class ListViewController: UIViewController {
     init(viewModel: ListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        viewModel.mergeUpdateHistoryIntoDatabase()
+        viewModel.fetchWebDataAndWriteIntoDatabase()
     }
     
     required init?(coder: NSCoder) {

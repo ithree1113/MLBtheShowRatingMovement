@@ -13,7 +13,7 @@ protocol ListViewModelProtocol {
     var listCount: Int { get }
     var listUpdated: (() -> ())? { get set }
     
-    func mergeUpdateHistoryIntoDatabase()
+    func fetchWebDataAndWriteIntoDatabase()
     func getPlayer(at index: Int) -> Player?
     func addFilter(field: String, delta: Int)
 }
@@ -28,7 +28,7 @@ class ListViewModel: ListViewModelProtocol {
     private let initDate = Date(string: "2023/04/21")!
     private var players: [Player] = []
     
-    func mergeUpdateHistoryIntoDatabase() {
+    func fetchWebDataAndWriteIntoDatabase() {
         let updatedList = realm.objects(UpdatedList.self)
         updateList
             .forEach { urlString in
@@ -49,10 +49,10 @@ class ListViewModel: ListViewModelProtocol {
 //                updateList.forEach { update in
 //                    var playerModels = realm.objects(PlayerModel.self).where { $0.name == update.name }
 //                    if playerModels.count == 0 {
-//                        createPlayerModel(at: date, from: update)
+//                        createPlayer(at: date, from: update)
 //                        playerModels = realm.objects(PlayerModel.self).where { $0.name == update.name }
 //                    }
-//                    updatePlayerModel(playerModels[0], at: date, from: update)
+//                    updatePlayer(playerModels[0], at: date, from: update)
 //                }
 //            }
     }
@@ -75,7 +75,7 @@ class ListViewModel: ListViewModelProtocol {
         return players[index]
     }
     
-    private func createPlayerModel(at date: Date, from update: UpdateElement) {
+    private func createPlayer(at date: Date, from update: UpdateElement) {
         let player = Player(name: update.playerName)
         
         update.updatedAttributes.forEach { updatedAttribute in
@@ -89,7 +89,7 @@ class ListViewModel: ListViewModelProtocol {
         })
     }
     
-    private func updatePlayerModel(_ player: Player, at date: Date, from update: UpdateElement) {
+    private func updatePlayer(_ player: Player, at date: Date, from update: UpdateElement) {
         update.updatedAttributes.forEach { updatedAttribute in
             guard let attribute = player.value(forKey: updatedAttribute.name.propertyKey()) as? List<RatingRecord> else {
                 return
