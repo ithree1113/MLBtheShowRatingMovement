@@ -60,7 +60,8 @@ class ListViewModel: ListViewModelProtocol {
     func addFilter(field: String, delta: Int) {
         players = realm.objects(Player.self).filter { player in
             guard field.count > 0,
-            let attribute = player.value(forKey: field) as? List<RatingRecord> else { return false }
+            var attribute = player.value(forKey: field) as? List<RatingRecord> else { return false }
+            attribute.sort(by: { $0.date.compare($1.date) == .orderedAscending })
             if delta >= 0 {
                 return (attribute.last!.value - attribute.first!.value) >= delta
             } else  {
