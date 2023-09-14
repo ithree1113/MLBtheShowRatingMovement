@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		04341F212AB2F74E00C8E5D8 /* SwiftSoup in Frameworks */ = {isa = PBXBuildFile; productRef = 04341F202AB2F74E00C8E5D8 /* SwiftSoup */; };
 		044404532AAF025400728DA4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044404522AAF025400728DA4 /* AppDelegate.swift */; };
 		044404552AAF025400728DA4 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 044404542AAF025400728DA4 /* SceneDelegate.swift */; };
 		0444045C2AAF025600728DA4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0444045B2AAF025600728DA4 /* Assets.xcassets */; };
@@ -43,6 +44,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				044404822AB070F800728DA4 /* SnapKit in Frameworks */,
+				04341F212AB2F74E00C8E5D8 /* SwiftSoup in Frameworks */,
 				0444046A2AAF049E00728DA4 /* RealmSwift in Frameworks */,
 				044404682AAF049E00728DA4 /* Realm in Frameworks */,
 			);
@@ -137,6 +139,7 @@
 				044404672AAF049E00728DA4 /* Realm */,
 				044404692AAF049E00728DA4 /* RealmSwift */,
 				044404812AB070F800728DA4 /* SnapKit */,
+				04341F202AB2F74E00C8E5D8 /* SwiftSoup */,
 			);
 			productName = MLBtheShowRatingMovement;
 			productReference = 0444044F2AAF025400728DA4 /* MLBtheShowRatingMovement.app */;
@@ -169,6 +172,7 @@
 			packageReferences = (
 				044404662AAF049E00728DA4 /* XCRemoteSwiftPackageReference "realm-swift" */,
 				044404802AB070F800728DA4 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				04341F1F2AB2F74E00C8E5D8 /* XCRemoteSwiftPackageReference "SwiftSoup" */,
 			);
 			productRefGroup = 044404502AAF025400728DA4 /* Products */;
 			projectDirPath = "";
@@ -417,6 +421,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		04341F1F2AB2F74E00C8E5D8 /* XCRemoteSwiftPackageReference "SwiftSoup" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/scinfu/SwiftSoup";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		044404662AAF049E00728DA4 /* XCRemoteSwiftPackageReference "realm-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/realm-swift.git";
@@ -436,6 +448,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		04341F202AB2F74E00C8E5D8 /* SwiftSoup */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 04341F1F2AB2F74E00C8E5D8 /* XCRemoteSwiftPackageReference "SwiftSoup" */;
+			productName = SwiftSoup;
+		};
 		044404672AAF049E00728DA4 /* Realm */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 044404662AAF049E00728DA4 /* XCRemoteSwiftPackageReference "realm-swift" */;
