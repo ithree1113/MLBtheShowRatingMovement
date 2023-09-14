@@ -14,7 +14,7 @@ protocol ListViewModelProtocol {
     var listUpdated: (() -> ())? { get set }
     
     func mergeUpdateHistoryIntoDatabase()
-    func getPlayer(at index: Int) -> PlayerModel?
+    func getPlayer(at index: Int) -> Player?
     func addFilter(field: String, delta: Int)
 }
 
@@ -26,7 +26,7 @@ class ListViewModel: ListViewModelProtocol {
     var listUpdated: (() -> ())?
     private let realm = try! Realm()
     private let initDate = Date(string: "2023/04/21")!
-    private var players: [PlayerModel] = []
+    private var players: [Player] = []
     
     func mergeUpdateHistoryIntoDatabase() {
         let updatedList = realm.objects(UpdatedList.self)
@@ -58,7 +58,7 @@ class ListViewModel: ListViewModelProtocol {
     }
     
     func addFilter(field: String, delta: Int) {
-        players = realm.objects(PlayerModel.self).filter { player in
+        players = realm.objects(Player.self).filter { player in
             guard field.count > 0,
             let attribute = player.value(forKey: field) as? List<RatingRecord> else { return false }
             if delta >= 0 {
@@ -70,32 +70,32 @@ class ListViewModel: ListViewModelProtocol {
         listUpdated?()
     }
     
-    func getPlayer(at index: Int) -> PlayerModel? {
+    func getPlayer(at index: Int) -> Player? {
         guard index < listCount else { return nil }
         return players[index]
     }
     
-    private func createPlayerModel(at date: Date, from update: UpdateModel) {
-        let player = PlayerModel(name: update.name)
+    private func createPlayerModel(at date: Date, from update: UpdateElement) {
+        let player = Player(name: update.playerName)
         
-        update.updateItems.forEach { updateItem in
-            guard let attribute = player.value(forKey: updateItem.name.propertyKey()) as? List<RatingRecord> else {
+        update.updatedAttributes.forEach { updatedAttribute in
+            guard let attribute = player.value(forKey: updatedAttribute.name.propertyKey()) as? List<RatingRecord> else {
                 return
             }
-            attribute.append(RatingRecord(date: initDate, value: updateItem.getInitValue()))
+            attribute.append(RatingRecord(date: initDate, value: updatedAttribute.getInitValue()))
         }
         try! realm.write({
             realm.add(player)
         })
     }
     
-    private func updatePlayerModel(_ player: PlayerModel, at date: Date, from update: UpdateModel) {
-        update.updateItems.forEach { updateItem in
-            guard let attribute = player.value(forKey: updateItem.name.propertyKey()) as? List<RatingRecord> else {
+    private func updatePlayerModel(_ player: Player, at date: Date, from update: UpdateElement) {
+        update.updatedAttributes.forEach { updatedAttribute in
+            guard let attribute = player.value(forKey: updatedAttribute.name.propertyKey()) as? List<RatingRecord> else {
                 return
             }
             try! realm.write({
-                attribute.append(RatingRecord(date: date, value: Int(updateItem.value)!))
+                attribute.append(RatingRecord(date: date, value: Int(updatedAttribute.value)!))
             })
         }
     }

@@ -1,5 +1,5 @@
 //
-//  PlayerModel.swift
+//  Player.swift
 //  MLBtheShowRatingMovement
 //
 //  Created by ithree1113 on 2023/9/11.
@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class PlayerModel: Object {
+class Player: Object {
     @Persisted(primaryKey: true) var name: String
     @Persisted var rating = List<RatingRecord>()
     // Bating

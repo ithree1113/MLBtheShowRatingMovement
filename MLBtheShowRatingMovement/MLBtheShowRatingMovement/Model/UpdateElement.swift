@@ -1,5 +1,5 @@
 //
-//  UpdateModel.swift
+//  UpdateElement.swift
 //  MLBtheShowRatingMovement
 //
 //  Created by ithree1113 on 2023/9/11.
@@ -8,12 +8,12 @@
 import Foundation
 
 
-struct UpdateModel {
-    let name: String
-    let updateItems: [UpdateItem]
+struct UpdateElement {
+    let playerName: String
+    let updatedAttributes: [UpdatedAttribute]
 }
 
-struct UpdateItem {
+struct UpdatedAttribute {
     let name: AttrName
     let value: String
     let diff: String
