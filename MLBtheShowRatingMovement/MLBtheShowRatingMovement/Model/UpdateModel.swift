@@ -17,11 +17,11 @@ struct UpdateModel {
 
 struct UpdateItem {
     let name: AttrName
-    let value: Int
+    let value: String
     let diff: String
     
     func getInitValue() -> Int {
-        return value + getReverse()
+        return Int(value)! + getReverse()
     }
     
     private func getReverse() -> Int {

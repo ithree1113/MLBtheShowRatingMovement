@@ -101,7 +101,7 @@ class ListViewModel: ListViewModelProtocol {
                 return
             }
             try! realm.write({
-                attribute.append(RatingRecord(date: date, value: updateItem.value))
+                attribute.append(RatingRecord(date: date, value: Int(updateItem.value)!))
             })
         }
     }
