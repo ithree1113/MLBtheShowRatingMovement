@@ -17,7 +17,25 @@ class UpdatedList: Object {
     }
 }
 
-let updateList: [String] = []
+let updateList: [String] = ["https://mlb23.theshow.com/roster_updates/2", // 0428
+                            "https://mlb23.theshow.com/roster_updates/3", // 0505
+                            "https://mlb23.theshow.com/roster_updates/4", // 0512
+                            "https://mlb23.theshow.com/roster_updates/5", // 0519
+                            "https://mlb23.theshow.com/roster_updates/6", // 0525
+                            "https://mlb23.theshow.com/roster_updates/7", // 0602
+                            "https://mlb23.theshow.com/roster_updates/8", // 0609
+                            "https://mlb23.theshow.com/roster_updates/9", // 0615
+                            "https://mlb23.theshow.com/roster_updates/10",// 0623
+                            "https://mlb23.theshow.com/roster_updates/11",// 0630
+                            "https://mlb23.theshow.com/roster_updates/13",// 0710
+                            "https://mlb23.theshow.com/roster_updates/15",// 0724
+                            "https://mlb23.theshow.com/roster_updates/16",// 0802
+                            "https://mlb23.theshow.com/roster_updates/17",// 0811
+                            "https://mlb23.theshow.com/roster_updates/18",// 0818
+                            "https://mlb23.theshow.com/roster_updates/19",// 0825
+                            "https://mlb23.theshow.com/roster_updates/20",// 0831
+                            "https://mlb23.theshow.com/roster_updates/21" //0908
+]
 /*
  override func viewDidLoad() {
      super.viewDidLoad()
