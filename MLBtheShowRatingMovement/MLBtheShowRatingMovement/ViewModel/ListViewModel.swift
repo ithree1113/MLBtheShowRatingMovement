@@ -67,13 +67,12 @@ class ListViewModel: ListViewModelProtocol {
     
     func addFilter(attr: AttrName?, delta: Int) {
         players = realm.objects(Player.self).filter { player in
-            guard let attr = attr,
-                  let attribute = player.value(forKey: attr.propertyKey()) as? List<RatingRecord> else { return false }
-            let sortedAttr = attribute.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
+            guard let attr = attr else { return false }
+            let attrRecord = player.getRecord(name: attr)
             if delta >= 0 {
-                return (sortedAttr.last!.value - sortedAttr.first!.value) >= delta
+                return (attrRecord.last!.value - attrRecord.first!.value) >= delta
             } else  {
-                return (sortedAttr.last!.value - sortedAttr.first!.value) <= delta
+                return (attrRecord.last!.value - attrRecord.first!.value) <= delta
             }
         }
         listUpdated?()

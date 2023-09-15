@@ -47,6 +47,14 @@ class Player: Object {
         self.init()
         self.name = name
     }
+    
+    func getRecord(name: AttrName) -> [RatingRecord] {
+        guard let list = value(forKey: name.propertyKey()) as? List<RatingRecord> else {
+            return []
+        }
+        let sortedList = list.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
+        return Array(sortedList)
+    }
 }
 
 class RatingRecord: EmbeddedObject {
