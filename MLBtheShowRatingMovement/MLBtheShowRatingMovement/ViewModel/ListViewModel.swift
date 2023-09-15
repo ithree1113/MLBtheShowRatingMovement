@@ -92,10 +92,10 @@ class ListViewModel: ListViewModelProtocol {
         let player = Player(name: update.playerName)
         
         update.updatedAttributes.forEach { updatedAttribute in
-            guard let attribute = player.value(forKey: updatedAttribute.name.propertyKey()) as? List<RatingRecord> else {
+            guard let attribute = player.value(forKey: updatedAttribute.name.propertyKey()) as? List<AttributeRecord> else {
                 return
             }
-            attribute.append(RatingRecord(date: initDate, value: updatedAttribute.getInitValue()))
+            attribute.append(AttributeRecord(date: initDate, value: updatedAttribute.getInitValue()))
         }
         try! realm.write({
             realm.add(player)
@@ -104,11 +104,11 @@ class ListViewModel: ListViewModelProtocol {
     
     private func updatePlayer(_ player: Player, at date: Date, from update: UpdateElement) {
         update.updatedAttributes.forEach { updatedAttribute in
-            guard let attribute = player.value(forKey: updatedAttribute.name.propertyKey()) as? List<RatingRecord> else {
+            guard let attribute = player.value(forKey: updatedAttribute.name.propertyKey()) as? List<AttributeRecord> else {
                 return
             }
             try! realm.write({
-                attribute.append(RatingRecord(date: date, value: Int(updatedAttribute.value)!))
+                attribute.append(AttributeRecord(date: date, value: Int(updatedAttribute.value)!))
             })
         }
     }
