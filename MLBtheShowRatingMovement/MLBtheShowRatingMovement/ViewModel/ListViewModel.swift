@@ -140,7 +140,14 @@ class ListViewModel: ListViewModelProtocol {
             }
             let valueAndChange = try element.child(5).text().components(separatedBy: .letters).filter { $0.count > 1 }.flatMap { $0.split(separator: " ") }
             for (index, attrName) in attrNames.enumerated() {
-                let updatedAttribute = UpdatedAttribute(name: AttrName(rawValue: attrName)!,
+                var attrNameVar = attrName
+                if attrNameVar == "CLU" {
+                    let suffix = try element.child(5).select("div")[4 * index + 4].attr("class").suffix(6)
+                    if suffix == "Orange" {
+                        attrNameVar = "PIT CLU"
+                    }
+                }
+                let updatedAttribute = UpdatedAttribute(name: AttrName(rawValue: attrNameVar)!,
                                                         value: String(valueAndChange[2 * index + 1]),
                                                         change: String(valueAndChange[2 * index + 1]))
                 updatedAttributes.append(updatedAttribute)
