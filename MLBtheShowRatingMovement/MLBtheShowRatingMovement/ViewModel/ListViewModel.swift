@@ -143,7 +143,7 @@ class ListViewModel: ListViewModelProtocol {
                 var attrNameVar = attrName
                 if attrNameVar == "CLU" {
                     let suffix = try element.child(5).select("div")[4 * index + 4].attr("class").suffix(6)
-                    if suffix == "Orange" {
+                    if suffix == "orange" {
                         attrNameVar = "PIT CLU"
                     }
                 }
