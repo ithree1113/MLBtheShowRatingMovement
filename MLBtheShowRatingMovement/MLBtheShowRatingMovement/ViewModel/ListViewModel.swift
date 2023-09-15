@@ -34,7 +34,9 @@ class ListViewModel: ListViewModelProtocol {
         return df
     }()
     
+    @MainActor
     func fetchWebDataAndWriteIntoDatabase() {
+        print(realm.configuration.fileURL)
         let updatedList = realm.objects(UpdatedList.self)
         updateList
             .forEach { urlString in
@@ -44,32 +46,23 @@ class ListViewModel: ListViewModelProtocol {
                 Task {
                     do {
                         let rawData = try await fetchWebData(urlString: urlString)
-                        let updateElements = try createUpdateElement(from: rawData)
-                        
+                        let updateData = try createUpdateData(from: rawData)
+                        updateData.1.forEach { update in
+                            var players = realm.objects(Player.self).where { $0.name == update.playerName }
+                            if players.count == 0 {
+                                createPlayer(at: updateData.0, from: update)
+                                players = realm.objects(Player.self).where { $0.name == update.playerName }
+                            }
+                            updatePlayer(players[0], at: updateData.0, from: update)
+                        }
                     } catch {
                         print(error)
                     }
-                }                
+                }
+                try! realm.write({
+                    realm.add(UpdatedList(urlString: urlString))
+                })
             }
-        
-//        updateHistory
-//            .sorted(by: { $0.0.compare($1.0) == .orderedAscending })
-//            .forEach { (date, updateList) in
-//                guard date.compare(lastUpdate[0].date) == .orderedDescending else {
-//                    return
-//                }
-//                try! realm.write({
-//                    lastUpdate[0].date = date
-//                })
-//                updateList.forEach { update in
-//                    var playerModels = realm.objects(PlayerModel.self).where { $0.name == update.name }
-//                    if playerModels.count == 0 {
-//                        createPlayer(at: date, from: update)
-//                        playerModels = realm.objects(PlayerModel.self).where { $0.name == update.name }
-//                    }
-//                    updatePlayer(playerModels[0], at: date, from: update)
-//                }
-//            }
     }
     
     func addFilter(field: String, delta: Int) {
@@ -127,26 +120,35 @@ class ListViewModel: ListViewModelProtocol {
         return (dateFormatter.date(from: dateString)!, rawData)
     }
     
-    private func createUpdateElement(from data: (Date, [Element])) throws -> [UpdateElement] {
-        var result: [UpdateElement] = []
+    private func createUpdateData(from data: (Date, [Element])) throws -> (Date, [UpdateElement]) {
+        var updateElements: [UpdateElement] = []
         for element in data.1 {
             var updatedAttributes: [UpdatedAttribute] = []
-            let updatedAttributeRawData = try element.child(5).text().components(separatedBy: [" "])
-            for (index, rawDataString) in updatedAttributeRawData.enumerated() {
-                switch (index % 3) {
-                case 0:
-                    break
-                case 1:
-                    break
-                case 2:
-                    break
-                default:
-                    break
+            let attrNames = try element.child(5).text().components(separatedBy: .decimalDigits).filter { $0.count > 2 }.map { attrName in
+                var attrNameVar = attrName
+                if let first = attrNameVar.first, first == " " {
+                    attrNameVar.removeFirst()
                 }
+                if let last = attrNameVar.last, last == " " {
+                    attrNameVar.removeLast()
+                }
+                return String(attrNameVar)
             }
-            
+            let valueAndChange = try element.child(5).text().components(separatedBy: .letters).filter { $0.count > 1 }.flatMap { $0.split(separator: " ") }
+            for (index, attrName) in attrNames.enumerated() {
+                let updatedAttribute = UpdatedAttribute(name: AttrName(rawValue: attrName)!,
+                                                        value: String(valueAndChange[2 * index + 1]),
+                                                        change: String(valueAndChange[2 * index + 1]))
+                updatedAttributes.append(updatedAttribute)
+            }
+            let updatedAttribute = UpdatedAttribute(name: .rating,
+                                                    value: try element.child(2).text(),
+                                                    change: try element.child(4).text())
+            updatedAttributes.append(updatedAttribute)
+            let updateElement = UpdateElement(playerName: try element.child(0).text(), updatedAttributes: updatedAttributes)
+            updateElements.append(updateElement)
         }
         
-        return result
+        return (data.0, updateElements)
     }
 }

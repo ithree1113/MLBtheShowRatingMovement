@@ -16,14 +16,20 @@ struct UpdateElement {
 struct UpdatedAttribute {
     let name: AttrName
     let value: String
-    let diff: String
+    let change: String
+    
+    init(name: AttrName, value: String, change: String) {
+        self.name = name
+        self.value = value
+        self.change = change
+    }
     
     func getInitValue() -> Int {
         return Int(value)! + getReverse()
     }
     
     private func getReverse() -> Int {
-        return -Int(diff)!
+        return -Int(change)!
     }
 }
 
