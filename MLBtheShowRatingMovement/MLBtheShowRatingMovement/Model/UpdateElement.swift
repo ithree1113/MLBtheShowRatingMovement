@@ -7,6 +7,10 @@
 
 import Foundation
 
+struct UpdatePackage {
+    let date: Date
+    let updateElements: [UpdateElement]
+}
 
 struct UpdateElement {
     let playerName: String

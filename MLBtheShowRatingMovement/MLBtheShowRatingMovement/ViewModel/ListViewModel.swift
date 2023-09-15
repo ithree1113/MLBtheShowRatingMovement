@@ -50,14 +50,14 @@ class ListViewModel: ListViewModelProtocol {
                     do {
                         let rawData = try await fetchWebData(urlString: urlString)
                         
-                        let updateData = try createUpdateData(from: rawData)
-                        updateData.1.forEach { update in
-                            var players = realm.objects(Player.self).where { $0.name == update.playerName }
+                        let updatePackage = try createUpdatePackage(from: rawData)
+                        updatePackage.updateElements.forEach { updateElement in
+                            var players = realm.objects(Player.self).where { $0.name == updateElement.playerName }
                             if players.count == 0 {
-                                createPlayer(at: updateData.0, from: update)
-                                players = realm.objects(Player.self).where { $0.name == update.playerName }
+                                createPlayer(at: updatePackage.date, from: updateElement)
+                                players = realm.objects(Player.self).where { $0.name == updateElement.playerName }
                             }
-                            updatePlayer(players[0], at: updateData.0, from: update)
+                            updatePlayer(players[0], at: updatePackage.date, from: updateElement)
                         }
                         loadingStatusChanged?(false)
                     } catch {
@@ -124,7 +124,7 @@ class ListViewModel: ListViewModelProtocol {
         return (dateFormatter.date(from: dateString)!, rawData)
     }
     
-    private func createUpdateData(from data: (Date, [Element])) throws -> (Date, [UpdateElement]) {
+    private func createUpdatePackage(from data: (Date, [Element])) throws -> UpdatePackage {
         var updateElements: [UpdateElement] = []
         for element in data.1 {
             var updatedAttributes: [UpdatedAttribute] = []
@@ -160,6 +160,6 @@ class ListViewModel: ListViewModelProtocol {
             updateElements.append(updateElement)
         }
         
-        return (data.0, updateElements)
+        return UpdatePackage(date: data.0, updateElements: updateElements)
     }
 }
