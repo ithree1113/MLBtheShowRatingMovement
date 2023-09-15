@@ -29,6 +29,7 @@ class ListViewController: UIViewController {
     
     private let lodingView: UIActivityIndicatorView = {
         let lv = UIActivityIndicatorView(style: .large)
+        lv.color = .black
         return lv
     }()
     
@@ -36,7 +37,6 @@ class ListViewController: UIViewController {
     init(viewModel: ListViewModelProtocol) {
         self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
-        viewModel.fetchWebDataAndWriteIntoDatabase()
     }
     
     required init?(coder: NSCoder) {
@@ -55,6 +55,7 @@ class ListViewController: UIViewController {
                 lodingView.stopAnimating()
             }
         }
+        viewModel.fetchWebDataAndWriteIntoDatabase()
     }
     
     // MARK: UI
