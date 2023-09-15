@@ -106,7 +106,7 @@ extension ListViewController: UITableViewDataSource {
         var content = cell.defaultContentConfiguration()
         content.text = player.name
         let attrRecord = player.getRecord(name: attrName)
-        content.secondaryText = "\(attrRecord.first!.value) -> \(attrRecord.last!.value)"
+        content.secondaryText = "\(attrName.rawValue): \(attrRecord.first!.value) -> \(attrRecord.last!.value)"
         cell.contentConfiguration = content
         
         return cell
