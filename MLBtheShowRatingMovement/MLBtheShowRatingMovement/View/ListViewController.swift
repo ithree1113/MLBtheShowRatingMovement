@@ -27,6 +27,11 @@ class ListViewController: UIViewController {
         return tv
     }()
     
+    private let lodingView: UIActivityIndicatorView = {
+        let lv = UIActivityIndicatorView(style: .large)
+        return lv
+    }()
+    
     // MARK: Init
     init(viewModel: ListViewModelProtocol) {
         self.viewModel = viewModel
@@ -43,6 +48,13 @@ class ListViewController: UIViewController {
         super.viewDidLoad()
         initLayout()
         viewModel.listUpdated = { [unowned self] in tableView.reloadData() }
+        viewModel.loadingStatusChanged = { [unowned self] isLoading in
+            if isLoading {
+                lodingView.startAnimating()
+            } else {
+                lodingView.stopAnimating()
+            }
+        }
     }
     
     // MARK: UI
@@ -54,6 +66,11 @@ class ListViewController: UIViewController {
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaInsets)
+        }
+        
+        view.addSubview(lodingView)
+        lodingView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
         }
     }
     

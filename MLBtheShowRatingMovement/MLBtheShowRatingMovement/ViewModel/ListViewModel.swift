@@ -13,6 +13,7 @@ protocol ListViewModelProtocol {
     
     var listCount: Int { get }
     var listUpdated: (() -> ())? { get set }
+    var loadingStatusChanged: ((Bool) -> ())? { get set }
     
     func fetchWebDataAndWriteIntoDatabase()
     func getPlayer(at index: Int) -> Player?
@@ -25,6 +26,7 @@ class ListViewModel: ListViewModelProtocol {
         players.count
     }
     var listUpdated: (() -> ())?
+    var loadingStatusChanged: ((Bool) -> ())?
     private let realm = try! Realm()
     private let initDate = Date(string: "2023/04/21")!
     private var players: [Player] = []
@@ -38,6 +40,7 @@ class ListViewModel: ListViewModelProtocol {
     func fetchWebDataAndWriteIntoDatabase() {
         print(realm.configuration.fileURL)
         let updatedList = realm.objects(UpdatedList.self)
+        loadingStatusChanged?(true)
         updateList
             .forEach { urlString in
                 guard !updatedList.contains(where: { $0.urlString == urlString }) else {
@@ -46,6 +49,7 @@ class ListViewModel: ListViewModelProtocol {
                 Task {
                     do {
                         let rawData = try await fetchWebData(urlString: urlString)
+                        
                         let updateData = try createUpdateData(from: rawData)
                         updateData.1.forEach { update in
                             var players = realm.objects(Player.self).where { $0.name == update.playerName }
@@ -55,6 +59,7 @@ class ListViewModel: ListViewModelProtocol {
                             }
                             updatePlayer(players[0], at: updateData.0, from: update)
                         }
+                        loadingStatusChanged?(false)
                     } catch {
                         print(error)
                     }
