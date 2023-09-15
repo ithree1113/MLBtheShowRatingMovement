@@ -7,10 +7,12 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 class ListViewController: UIViewController {
     
     var viewModel: ListViewModelProtocol
+    private var filterAttrName: AttrName?
     
     lazy var addingFilterBtn: UIBarButtonItem = {
         let afb = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addingFilterBtnDidTap))
@@ -66,9 +68,10 @@ class ListViewController: UIViewController {
         }
         
         let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] action in
-            let attr = alert.textFields?[0].text ?? ""
+            let attr = AttrName(rawValue: alert.textFields?[0].text ?? "")
             let delta = Int(alert.textFields?[1].text ?? "") ?? 0
-            viewModel.addFilter(field: attr, delta: delta)
+            viewModel.addFilter(attr: attr, delta: delta)
+            self.filterAttrName = attr
         })
         alert.addAction(cancalAction)
         alert.addAction(confirmAction)
@@ -80,11 +83,14 @@ class ListViewController: UIViewController {
 extension ListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "defaultCell", for: indexPath)
-        guard let player = viewModel.getPlayer(at: indexPath.row) else { return cell }
+        guard let player = viewModel.getPlayer(at: indexPath.row),
+              let attrName = filterAttrName else { return cell }
         
         var content = cell.defaultContentConfiguration()
         content.text = player.name
-        content.secondaryText = "\(player.rating.first!.value) -> \(player.rating.last!.value)"
+        let oriValue = (player.value(forKey: attrName.propertyKey()) as! List<RatingRecord>).first!.value
+        let curValue = (player.value(forKey: attrName.propertyKey()) as! List<RatingRecord>).last!.value
+        content.secondaryText = "\(oriValue) -> \(curValue)"
         cell.contentConfiguration = content
         
         return cell

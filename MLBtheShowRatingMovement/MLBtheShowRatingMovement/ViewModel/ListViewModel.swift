@@ -16,7 +16,7 @@ protocol ListViewModelProtocol {
     
     func fetchWebDataAndWriteIntoDatabase()
     func getPlayer(at index: Int) -> Player?
-    func addFilter(field: String, delta: Int)
+    func addFilter(attr: AttrName?, delta: Int)
 }
 
 class ListViewModel: ListViewModelProtocol {
@@ -65,15 +65,15 @@ class ListViewModel: ListViewModelProtocol {
             }
     }
     
-    func addFilter(field: String, delta: Int) {
+    func addFilter(attr: AttrName?, delta: Int) {
         players = realm.objects(Player.self).filter { player in
-            guard field.count > 0,
-            var attribute = player.value(forKey: field) as? List<RatingRecord> else { return false }
-            attribute.sort(by: { $0.date.compare($1.date) == .orderedAscending })
+            guard let attr = attr,
+                  let attribute = player.value(forKey: attr.propertyKey()) as? List<RatingRecord> else { return false }
+            let sortedAttr = attribute.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
             if delta >= 0 {
-                return (attribute.last!.value - attribute.first!.value) >= delta
+                return (sortedAttr.last!.value - sortedAttr.first!.value) >= delta
             } else  {
-                return (attribute.last!.value - attribute.first!.value) <= delta
+                return (sortedAttr.last!.value - sortedAttr.first!.value) <= delta
             }
         }
         listUpdated?()
