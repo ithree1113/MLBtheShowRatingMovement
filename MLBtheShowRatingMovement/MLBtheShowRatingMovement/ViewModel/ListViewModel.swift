@@ -172,8 +172,9 @@ fileprivate extension Element {
     func getUpdatedAttributeNames() throws -> [String] {
         return try child(5)
             .text()
+            .replacingOccurrences(of: "+", with: "")
+            .replacingOccurrences(of: "-", with: "")
             .components(separatedBy: .decimalDigits)
-            .filter { $0.count > 2 }
             .map { attrName in
                 if let firstChar = attrName.first, firstChar == " " {
                     return String(attrName.dropFirst())
@@ -186,13 +187,15 @@ fileprivate extension Element {
                 }
                 return attrName
             }
+            .filter { $0.count > 0 }
+            .map { $0.replacingOccurrences(of: "/", with: "/9") }
     }
     
     func getUpdatedValueAndChange() throws -> [String] {
         return try child(5)
             .text()
+            .replacingOccurrences(of: "/9", with: "")
             .components(separatedBy: .letters)
-            .filter { $0.count > 1 }
             .flatMap { $0.split(separator: " ") }
             .map { String($0) }
     }
