@@ -119,7 +119,7 @@ class ListViewModel: ListViewModelProtocol {
         
         guard let html = String(data: data, encoding: .utf8) else { return (Date(), []) }
         let document = try SwiftSoup.parse(html)
-        let rawData = try document.select("tr").array().filter{ $0.children().count == 6 }.filter{ try $0.child(0).text() != "Player" }.filter{ try $0.child(5).text().count != 0 }
+        let rawData = try document.select("tr").array().filter{ $0.children().count == 6 }.filter{ try $0.getPlayerName() != "Player" }.filter{ try $0.child(5).text().count != 0 }
         let dateString = try document.select("h2")[1].text()
         return (dateFormatter.date(from: dateString)!, rawData)
     }
@@ -128,17 +128,8 @@ class ListViewModel: ListViewModelProtocol {
         var updateElements: [UpdateElement] = []
         for element in data.1 {
             var updatedAttributes: [UpdatedAttribute] = []
-            let attrNames = try element.child(5).text().components(separatedBy: .decimalDigits).filter { $0.count > 2 }.map { attrName in
-                var attrNameVar = attrName
-                if let first = attrNameVar.first, first == " " {
-                    attrNameVar.removeFirst()
-                }
-                if let last = attrNameVar.last, last == " " {
-                    attrNameVar.removeLast()
-                }
-                return String(attrNameVar)
-            }
-            let valueAndChange = try element.child(5).text().components(separatedBy: .letters).filter { $0.count > 1 }.flatMap { $0.split(separator: " ") }
+            let attrNames = try element.getUpdatedAttributeNames()
+            let valueAndChange = try element.getUpdatedValueAndChange()
             for (index, attrName) in attrNames.enumerated() {
                 var attrNameVar = attrName
                 if attrNameVar == "CLU" {
@@ -148,18 +139,61 @@ class ListViewModel: ListViewModelProtocol {
                     }
                 }
                 let updatedAttribute = UpdatedAttribute(name: AttrName(rawValue: attrNameVar)!,
-                                                        value: String(valueAndChange[2 * index + 1]),
-                                                        change: String(valueAndChange[2 * index + 1]))
+                                                        value: valueAndChange[2 * index + 1],
+                                                        change: valueAndChange[2 * index + 1])
                 updatedAttributes.append(updatedAttribute)
             }
             let updatedAttribute = UpdatedAttribute(name: .rating,
-                                                    value: try element.child(2).text(),
-                                                    change: try element.child(4).text())
+                                                    value: try element.getNewRating(),
+                                                    change: try element.getRatingChange())
             updatedAttributes.append(updatedAttribute)
-            let updateElement = UpdateElement(playerName: try element.child(0).text(), updatedAttributes: updatedAttributes)
+            let updateElement = UpdateElement(playerName: try element.getPlayerName(), updatedAttributes: updatedAttributes)
             updateElements.append(updateElement)
         }
         
         return UpdatePackage(date: data.0, updateElements: updateElements)
+    }
+}
+
+// MARK: - Element extension
+fileprivate extension Element {
+    func getPlayerName() throws -> String {
+        return try child(0).text()
+    }
+    
+    func getNewRating() throws -> String {
+        return try child(2).text()
+    }
+    
+    func getRatingChange() throws -> String {
+        return try child(4).text()
+    }
+    
+    func getUpdatedAttributeNames() throws -> [String] {
+        return try child(5)
+            .text()
+            .components(separatedBy: .decimalDigits)
+            .filter { $0.count > 2 }
+            .map { attrName in
+                if let firstChar = attrName.first, firstChar == " " {
+                    return String(attrName.dropFirst())
+                }
+                return attrName
+            }
+            .map { attrName in
+                if let lastChar = attrName.last, lastChar == " " {
+                    return String(attrName.dropLast())
+                }
+                return attrName
+            }
+    }
+    
+    func getUpdatedValueAndChange() throws -> [String] {
+        return try child(5)
+            .text()
+            .components(separatedBy: .letters)
+            .filter { $0.count > 1 }
+            .flatMap { $0.split(separator: " ") }
+            .map { String($0) }
     }
 }
