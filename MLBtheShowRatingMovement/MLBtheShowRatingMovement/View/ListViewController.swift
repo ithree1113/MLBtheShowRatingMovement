@@ -47,7 +47,10 @@ class ListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         initLayout()
-        viewModel.listUpdated = { [unowned self] in tableView.reloadData() }
+        viewModel.listUpdated = { [unowned self] in
+            self.title = "\(viewModel.listCount)"
+            tableView.reloadData()
+        }
         viewModel.loadingStatusChanged = { [unowned self] isLoading in
             if isLoading {
                 lodingView.startAnimating()
