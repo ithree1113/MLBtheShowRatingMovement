@@ -55,6 +55,14 @@ class Player: Object {
         let sortedList = list.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
         return Array(sortedList)
     }
+    
+    func getRecord(propertyString: String) -> [AttributeRecord] {
+        guard let list = value(forKey: propertyString) as? List<AttributeRecord> else {
+            return []
+        }
+        let sortedList = list.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
+        return Array(sortedList)
+    }
 }
 
 class AttributeRecord: EmbeddedObject {
