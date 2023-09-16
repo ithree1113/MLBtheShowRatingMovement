@@ -36,37 +36,39 @@ class ListViewModel: ListViewModelProtocol {
         return df
     }()
     
-    @MainActor
     func fetchWebDataAndWriteIntoDatabase() {
         print(realm.configuration.fileURL)
         let updatedList = realm.objects(UpdatedList.self)
         loadingStatusChanged?(true)
+        let queue = DispatchQueue(label: "download.serial.queue")
         updateList
             .forEach { urlString in
                 guard !updatedList.contains(where: { $0.urlString == urlString }) else {
                     return
                 }
-                Task {
+                queue.async { [unowned self] in
                     do {
-                        let rawData = try await fetchWebData(urlString: urlString)
-                        
+                        let rawData = try fetchWebData(urlString: urlString)
                         let updatePackage = try createUpdatePackage(from: rawData)
-                        updatePackage.updateElements.forEach { updateElement in
-                            var players = realm.objects(Player.self).where { $0.name == updateElement.playerName }
-                            if players.count == 0 {
-                                createPlayer(at: updatePackage.date, from: updateElement)
-                                players = realm.objects(Player.self).where { $0.name == updateElement.playerName }
+                        DispatchQueue.main.async { [unowned self] in
+                            updatePackage.updateElements.forEach { updateElement in
+                                var players = realm.objects(Player.self).where { $0.name == updateElement.playerName }
+                                if players.count == 0 {
+                                    createPlayer(at: updatePackage.date, from: updateElement)
+                                    players = realm.objects(Player.self).where { $0.name == updateElement.playerName }
+                                }
+                                updatePlayer(players[0], at: updatePackage.date, from: updateElement)
                             }
-                            updatePlayer(players[0], at: updatePackage.date, from: updateElement)
+                            try! realm.write({
+                                realm.add(UpdatedUrl(urlString: urlString))
+                            })
+                            }
                         }
                         loadingStatusChanged?(false)
                     } catch {
                         print(error)
                     }
                 }
-                try! realm.write({
-                    realm.add(UpdatedList(urlString: urlString))
-                })
             }
     }
     
@@ -113,9 +115,9 @@ class ListViewModel: ListViewModelProtocol {
         }
     }
     
-    private func fetchWebData(urlString: String) async throws -> (Date, [Element]) {
+    private func fetchWebData(urlString: String) throws -> (Date, [Element]) {
         let url: URL = URLComponents(string: urlString)!.url!
-        let (data, _) = try await URLSession.shared.data(from: url)
+        let data = try Data(contentsOf: url)
         
         guard let html = String(data: data, encoding: .utf8) else { return (Date(), []) }
         let document = try SwiftSoup.parse(html)
