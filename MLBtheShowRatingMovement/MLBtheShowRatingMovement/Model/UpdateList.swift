@@ -34,7 +34,8 @@ let updateList: [String] = ["https://mlb23.theshow.com/roster_updates/2", // 042
                             "https://mlb23.theshow.com/roster_updates/18",// 0818
                             "https://mlb23.theshow.com/roster_updates/19",// 0825
                             "https://mlb23.theshow.com/roster_updates/20",// 0831
-                            "https://mlb23.theshow.com/roster_updates/21" //0908
+                            "https://mlb23.theshow.com/roster_updates/21",// 0908
+                            "https://mlb23.theshow.com/roster_updates/22" // 0915
 ]
 /*
  override func viewDidLoad() {
