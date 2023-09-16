@@ -85,6 +85,7 @@ class ListViewModel: ListViewModelProtocol {
         players = realm.objects(Player.self).filter { player in
             guard let attr = attr else { return false }
             let attrRecord = player.getRecord(name: attr)
+            guard attrRecord.count > 0 else { return false }
             if delta >= 0 {
                 return (attrRecord.last!.value - attrRecord.first!.value) >= delta
             } else  {
