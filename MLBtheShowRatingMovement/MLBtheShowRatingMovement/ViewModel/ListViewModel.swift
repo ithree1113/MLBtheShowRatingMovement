@@ -144,13 +144,13 @@ class ListViewModel: ListViewModelProtocol {
             for (index, attrName) in attrNames.enumerated() {
                 var attrNameVar = attrName
                 if attrNameVar == "CLU" {
-                    let suffix = try element.child(5).select("div")[4 * index + 4].attr("class").suffix(6)
+                    let suffix = try element.child(5).select("div")[4 * index + 2].attr("class").suffix(6)
                     if suffix == "orange" {
                         attrNameVar = "PIT CLU"
                     }
                 }
                 let updatedAttribute = UpdatedAttribute(name: AttrName(rawValue: attrNameVar)!,
-                                                        value: valueAndChange[2 * index + 1],
+                                                        value: valueAndChange[2 * index],
                                                         change: valueAndChange[2 * index + 1])
                 updatedAttributes.append(updatedAttribute)
             }
