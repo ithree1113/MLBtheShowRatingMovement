@@ -119,6 +119,9 @@ class ListViewModel: ListViewModelProtocol {
                 return
             }
             try! realm.write({
+                if attribute.count == 0 {
+                    attribute.append(AttributeRecord(date: initDate, value: updatedAttribute.getInitValue()))
+                }
                 attribute.append(AttributeRecord(date: date, value: Int(updatedAttribute.value)!))
             })
         }
