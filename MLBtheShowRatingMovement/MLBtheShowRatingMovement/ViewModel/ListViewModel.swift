@@ -35,10 +35,16 @@ class ListViewModel: ListViewModelProtocol {
         df.dateFormat = "MMMM dd, yyyy"
         return df
     }()
+    private var loadedCount = 0
+    private lazy var unloadCount: Int = {
+        let updatedUrlList = Array(realm.objects(UpdatedUrl.self).map{ $0.urlString })
+        return updateList.filter { !updatedUrlList.contains($0) }.count
+    }()
     
     func fetchWebDataAndWriteIntoDatabase() {
         print(realm.configuration.fileURL)
-        let updatedList = realm.objects(UpdatedList.self)
+        guard unloadCount > 0 else { return }
+        let updatedList = realm.objects(UpdatedUrl.self)
         loadingStatusChanged?(true)
         let queue = DispatchQueue(label: "download.serial.queue")
         updateList
@@ -62,9 +68,12 @@ class ListViewModel: ListViewModelProtocol {
                             try! realm.write({
                                 realm.add(UpdatedUrl(urlString: urlString))
                             })
+                            loadedCount += 1
+                            print("\(loadedCount)/\(unloadCount)")
+                            if loadedCount == unloadCount {
+                                loadingStatusChanged?(false)
                             }
                         }
-                        loadingStatusChanged?(false)
                     } catch {
                         print(error)
                     }

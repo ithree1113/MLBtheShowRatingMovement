@@ -8,7 +8,7 @@
 import Foundation
 import RealmSwift
 
-class UpdatedList: Object {
+class UpdatedUrl: Object {
     @Persisted var urlString: String
     
     convenience init(urlString: String) {
