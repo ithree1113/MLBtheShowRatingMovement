@@ -91,6 +91,18 @@ class ListViewModel: ListViewModelProtocol {
                 return (attrRecord.last!.value - attrRecord.first!.value) <= delta
             }
         }
+        .sorted(by: { player1, player2 in
+            guard let attr = attr else { return false }
+            let attrRecord1 = player1.getRecord(name: attr)
+            let attrRecord2 = player2.getRecord(name: attr)
+            if delta >= 0 {
+                return (attrRecord1.last!.value - attrRecord1.first!.value) >=
+                (attrRecord2.last!.value - attrRecord2.first!.value)
+            } else  {
+                return (attrRecord1.last!.value - attrRecord1.first!.value) <
+                (attrRecord2.last!.value - attrRecord2.first!.value)
+            }
+        })
         listUpdated?()
     }
     
