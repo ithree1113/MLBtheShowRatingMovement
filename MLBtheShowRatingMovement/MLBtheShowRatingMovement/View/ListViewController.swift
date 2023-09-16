@@ -69,7 +69,7 @@ class ListViewController: UIViewController {
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
-            make.edges.equalTo(view.safeAreaInsets)
+            make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
         view.addSubview(lodingView)
