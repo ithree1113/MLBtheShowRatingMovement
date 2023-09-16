@@ -112,7 +112,7 @@ extension ListViewController: UITableViewDataSource {
         let attrRecord = player.getRecord(name: attrName)
         let oldRating = player.rating.first!.value
         let newRating = player.rating.last!.value
-        content.secondaryText = "Rating: \(oldRating) -> \(newRating) \(newRating - oldRating)" + (attrName == .rating ? "" : " | \(attrName.rawValue): \(attrRecord.first!.value) -> \(attrRecord.last!.value)")
+        content.secondaryText = "Rating: \(oldRating) -> \(newRating)(\(newRating - oldRating))" + (attrName == .rating ? "" : " | \(attrName.rawValue): \(attrRecord.first!.value) -> \(attrRecord.last!.value)(\(attrRecord.last!.value - attrRecord.first!.value))")
         cell.contentConfiguration = content
         
         return cell
