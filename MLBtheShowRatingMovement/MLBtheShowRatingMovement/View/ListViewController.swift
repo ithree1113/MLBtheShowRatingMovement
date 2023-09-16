@@ -127,5 +127,10 @@ extension ListViewController: UITableViewDataSource {
 extension ListViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        guard let player = viewModel.getPlayer(at: indexPath.row) else {
+            return
+        }
+        let detail = DetailViewController(player: player)
+        navigationController?.pushViewController(detail, animated: true)
     }
 }

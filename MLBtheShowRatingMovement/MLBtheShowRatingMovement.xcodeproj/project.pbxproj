@@ -21,6 +21,7 @@
 		0444047C2AB03B0A00728DA4 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444047B2AB03B0A00728DA4 /* ListViewController.swift */; };
 		0444047F2AB0616100728DA4 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444047E2AB0616100728DA4 /* ListViewModel.swift */; };
 		044404822AB070F800728DA4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 044404812AB070F800728DA4 /* SnapKit */; };
+		2C14291F2AB5F0DB007EF198 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C14291E2AB5F0DB007EF198 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		044404742AAF1D4000728DA4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		0444047B2AB03B0A00728DA4 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		0444047E2AB0616100728DA4 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
+		2C14291E2AB5F0DB007EF198 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -107,6 +109,7 @@
 			isa = PBXGroup;
 			children = (
 				0444047B2AB03B0A00728DA4 /* ListViewController.swift */,
+				2C14291E2AB5F0DB007EF198 /* DetailViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -200,6 +203,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2C14291F2AB5F0DB007EF198 /* DetailViewController.swift in Sources */,
 				044404722AAF170E00728DA4 /* UpdateList.swift in Sources */,
 				044404532AAF025400728DA4 /* AppDelegate.swift in Sources */,
 				0444047C2AB03B0A00728DA4 /* ListViewController.swift in Sources */,

@@ -37,7 +37,7 @@ struct UpdatedAttribute {
     }
 }
 
-enum AttrName: String {
+enum AttrName: String, CaseIterable {
     case rating = "Rating"
     // Bating
     case conR = "CON R"
