@@ -18,6 +18,7 @@ protocol ListViewModelProtocol {
     func fetchWebDataAndWriteIntoDatabase()
     func getPlayer(at index: Int) -> Player?
     func addFilter(attr: AttrName?, delta: Int)
+    func searchPlayer(name: String)
 }
 
 class ListViewModel: ListViewModelProtocol {
@@ -104,6 +105,11 @@ class ListViewModel: ListViewModelProtocol {
                 (attrRecord2.last!.value - attrRecord2.first!.value)
             }
         })
+        listUpdated?()
+    }
+    
+    func searchPlayer(name: String) {
+        players = realm.objects(Player.self).filter { $0.name.lowercased().hasPrefix(name.lowercased()) || $0.name.lowercased().hasSuffix(name.lowercased()) }
         listUpdated?()
     }
     
