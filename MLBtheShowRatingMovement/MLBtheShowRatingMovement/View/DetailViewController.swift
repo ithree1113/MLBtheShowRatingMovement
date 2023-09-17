@@ -45,7 +45,7 @@ class DetailViewController: UIViewController {
         
         scrollView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.edges.equalTo(scrollView.contentLayoutGuide).inset(20)
         }
         
         AttrName.allCases.forEach({ attrName in
@@ -55,6 +55,7 @@ class DetailViewController: UIViewController {
             let record = player.getRecord(name: attrName)
             let title = UILabel()
             title.text = attrName.rawValue
+            title.textColor = attrName.rawValue == "Rating" ? UIColor(red: 46.0/255.0, green: 169.0/255.0, blue: 223.0/255.0, alpha: 1) : .black
             let changeLabel = UILabel()
             let change = player.getChange(attrName: attrName)
             changeLabel.text = "\(record.first!.value) -> \(record.last!.value)(\(change))"
