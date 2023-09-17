@@ -83,22 +83,29 @@ class ListViewModel: ListViewModelProtocol {
     }
     
     func addFilter(attr: AttrName?, delta: Int) {
-        players = realm.objects(Player.self).filter { player in
-            guard let attr = attr, player.getRecord(name: attr).count > 0 else { return false }
-            if delta >= 0 {
-                return player.getChange(attrName: attr) >= delta
-            } else {
-                return player.getChange(attrName: attr) <= delta
+        if delta == 99 {
+            batterSpecialFilter()
+        } else if delta == -99 {
+            pitcherSpecialFilter()
+        } else {
+            players = realm.objects(Player.self).filter { player in
+                guard let attr = attr, player.getRecord(name: attr).count > 0 else { return false }
+                if delta >= 0 {
+                    return player.getChange(attrName: attr) >= delta
+                } else {
+                    return player.getChange(attrName: attr) <= delta
+                }
             }
+            .sorted(by: { player1, player2 in
+                guard let attr = attr else { return false }
+                if delta >= 0 {
+                    return player1.getChange(attrName: attr) >= player2.getChange(attrName: attr)
+                } else  {
+                    return player1.getChange(attrName: attr) <= player2.getChange(attrName: attr)
+                }
+            })
         }
-        .sorted(by: { player1, player2 in
-            guard let attr = attr else { return false }
-            if delta >= 0 {
-                return player1.getChange(attrName: attr) >= player2.getChange(attrName: attr)
-            } else  {
-                return player1.getChange(attrName: attr) <= player2.getChange(attrName: attr)
-            }
-        })
+
         listUpdated?()
     }
     
@@ -179,6 +186,52 @@ class ListViewModel: ListViewModelProtocol {
         }
         
         return UpdatePackage(date: data.0, updateElements: updateElements)
+    }
+    
+    private func batterSpecialFilter() {
+        let conditions: [AttrName] = [.conR, .conL, .pwrR, .pwrL]
+        let standards: [Int] = [25, 20]
+        let matchCounts: [Int] = [1, 2]
+
+        var final: Set<Player> = Set()
+        for index in 0..<standards.count {
+            let result = realm.objects(Player.self).filter { player in
+                var matchCount = 0
+                for condition in conditions {
+                    if player.getRecord(name: condition).count == 0 { continue }
+                    if standards[index] >= 0 {
+                        if abs(player.getChange(attrName: condition)) >= standards[index] { matchCount += 1 }
+                    }
+                    if matchCount == matchCounts[index] { return true }
+                }
+                return false
+            }
+            final = final.union(result)
+        }
+        players = Array(final).sorted(by: { $0.getLastValue(attrName: .rating) >= $1.getLastValue(attrName: .rating) })
+    }
+    
+    private func pitcherSpecialFilter() {
+        let conditions: [AttrName] = [.h9, .hr9, .bb9, .k9]
+        let standards: [Int] = [20, 15, 10]
+        let matchCounts: [Int] = [1, 2, 3]
+
+        var final: Set<Player> = Set()
+        for index in 0..<standards.count {
+            let result = realm.objects(Player.self).filter { player in
+                var matchCount = 0
+                for condition in conditions {
+                    if player.getRecord(name: condition).count == 0 { continue }
+                    if standards[index] >= 0 {
+                        if abs(player.getChange(attrName: condition)) >= standards[index] { matchCount += 1 }
+                    }
+                    if matchCount == matchCounts[index] { return true }
+                }
+                return false
+            }
+            final = final.union(result)
+        }
+        players = Array(final).sorted(by: { $0.getLastValue(attrName: .rating) >= $1.getLastValue(attrName: .rating) })
     }
 }
 
