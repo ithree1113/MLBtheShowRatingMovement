@@ -56,7 +56,7 @@ class DetailViewController: UIViewController {
             let title = UILabel()
             title.text = attrName.rawValue
             let changeLabel = UILabel()
-            let change = record.last!.value - record.first!.value
+            let change = player.getChange(attrName: attrName)
             changeLabel.text = "\(record.first!.value) -> \(record.last!.value)(\(change))"
             changeLabel.textColor = change >= 0 ? UIColor(red: 0, green: 170.0/255.0, blue: 144.0/255.0, alpha: 1) : UIColor(red: 203.0/255.0, green: 27.0/255.0, blue: 69.0/255.0, alpha: 1)
             let innerStack = UIStackView(arrangedSubviews: [title, changeLabel])

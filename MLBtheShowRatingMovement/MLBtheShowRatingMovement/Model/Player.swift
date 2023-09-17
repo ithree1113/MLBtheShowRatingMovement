@@ -56,12 +56,28 @@ class Player: Object {
         return Array(sortedList)
     }
     
-    func getRecord(propertyString: String) -> [AttributeRecord] {
-        guard let list = value(forKey: propertyString) as? List<AttributeRecord> else {
-            return []
+    func getChange(attrName: AttrName) -> Int {
+        guard let list = value(forKey: attrName.propertyKey()) as? List<AttributeRecord> else {
+            return 0
         }
         let sortedList = list.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
-        return Array(sortedList)
+        return min(sortedList.last!.value, 99) - min(sortedList.first!.value, 99) 
+    }
+    
+    func getFirstValue(attrName: AttrName) -> Int {
+        guard let list = value(forKey: attrName.propertyKey()) as? List<AttributeRecord> else {
+            return 0
+        }
+        let sortedList = list.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
+        return sortedList.first!.value
+    }
+    
+    func getLastValue(attrName: AttrName) -> Int {
+        guard let list = value(forKey: attrName.propertyKey()) as? List<AttributeRecord> else {
+            return 0
+        }
+        let sortedList = list.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
+        return sortedList.last!.value
     }
 }
 

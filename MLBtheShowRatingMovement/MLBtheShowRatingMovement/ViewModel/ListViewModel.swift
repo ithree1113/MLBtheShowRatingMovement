@@ -84,25 +84,19 @@ class ListViewModel: ListViewModelProtocol {
     
     func addFilter(attr: AttrName?, delta: Int) {
         players = realm.objects(Player.self).filter { player in
-            guard let attr = attr else { return false }
-            let attrRecord = player.getRecord(name: attr)
-            guard attrRecord.count > 0 else { return false }
+            guard let attr = attr, player.getRecord(name: attr).count > 0 else { return false }
             if delta >= 0 {
-                return (attrRecord.last!.value - attrRecord.first!.value) >= delta
-            } else  {
-                return (attrRecord.last!.value - attrRecord.first!.value) <= delta
+                return player.getChange(attrName: attr) >= delta
+            } else {
+                return player.getChange(attrName: attr) <= delta
             }
         }
         .sorted(by: { player1, player2 in
             guard let attr = attr else { return false }
-            let attrRecord1 = player1.getRecord(name: attr)
-            let attrRecord2 = player2.getRecord(name: attr)
             if delta >= 0 {
-                return (attrRecord1.last!.value - attrRecord1.first!.value) >=
-                (attrRecord2.last!.value - attrRecord2.first!.value)
+                return player1.getChange(attrName: attr) >= player2.getChange(attrName: attr)
             } else  {
-                return (attrRecord1.last!.value - attrRecord1.first!.value) <
-                (attrRecord2.last!.value - attrRecord2.first!.value)
+                return player1.getChange(attrName: attr) <= player2.getChange(attrName: attr)
             }
         })
         listUpdated?()
