@@ -19,6 +19,11 @@ class ListViewController: UIViewController {
         return afb
     }()
     
+    lazy var searchBtn: UIBarButtonItem = {
+        let sb = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchBtnDidTap))
+        return sb
+    }()
+    
     lazy var tableView: UITableView = {
         let tv = UITableView()
         tv.register(UITableViewCell.self, forCellReuseIdentifier: "defaultCell")
@@ -65,7 +70,7 @@ class ListViewController: UIViewController {
     private func initLayout() {
         view.backgroundColor = .white
         
-        navigationItem.rightBarButtonItem = addingFilterBtn
+        navigationItem.rightBarButtonItems = [addingFilterBtn, searchBtn]
         
         view.addSubview(tableView)
         tableView.snp.makeConstraints { make in
@@ -98,21 +103,38 @@ class ListViewController: UIViewController {
         alert.addAction(confirmAction)
         present(alert, animated: true)
     }
+    
+    @objc private func searchBtnDidTap() {
+        let alert = UIAlertController(title: "Player Search", message: nil, preferredStyle: .alert)
+        alert.addTextField { $0.placeholder = "Name" }
+        
+        let cancalAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] action in
+            self.dismiss(animated: true)
+        }
+        
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] action in
+            let playerName = alert.textFields?[0].text ?? ""
+            viewModel.searchPlayer(name: playerName)
+            self.filterAttrName = nil
+        })
+        alert.addAction(cancalAction)
+        alert.addAction(confirmAction)
+        present(alert, animated: true)
+    }
 }
 
 // MARK: - UITableViewDataSource
 extension ListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "defaultCell", for: indexPath)
-        guard let player = viewModel.getPlayer(at: indexPath.row),
-              let attrName = filterAttrName else { return cell }
+        guard let player = viewModel.getPlayer(at: indexPath.row) else { return cell }
         
         var content = cell.defaultContentConfiguration()
         content.text = player.name
-        let attrRecord = player.getRecord(name: attrName)
+        let attrName: AttrName = filterAttrName ?? .rating
         let oldRating = player.rating.first!.value
         let newRating = player.rating.last!.value
-        content.secondaryText = "Rating: \(oldRating) -> \(newRating) \(newRating - oldRating)" + (attrName == .rating ? "" : " | \(attrName.rawValue): \(attrRecord.first!.value) -> \(attrRecord.last!.value)")
+        content.secondaryText = "Rating: \(oldRating) -> \(newRating)(\(newRating - oldRating))" + (attrName == .rating ? "" : " | \(attrName.rawValue): \(player.getFirstValue(attrName: attrName)) -> \(player.getLastValue(attrName: attrName))(\(player.getChange(attrName: attrName)))")
         cell.contentConfiguration = content
         
         return cell

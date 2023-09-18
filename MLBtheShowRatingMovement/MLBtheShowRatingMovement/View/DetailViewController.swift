@@ -45,7 +45,7 @@ class DetailViewController: UIViewController {
         
         scrollView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
-            make.edges.equalTo(scrollView.contentLayoutGuide)
+            make.edges.equalTo(scrollView.contentLayoutGuide).inset(20)
         }
         
         let teamTitle = UILabel()
@@ -67,9 +67,12 @@ class DetailViewController: UIViewController {
             let record = player.getRecord(name: attrName)
             let title = UILabel()
             title.text = attrName.rawValue
-            let change = UILabel()
-            change.text = "\(record.first!.value) -> \(record.last!.value)"
-            let innerStack = UIStackView(arrangedSubviews: [title, change])
+            title.textColor = attrName.rawValue == "Rating" ? UIColor(red: 46.0/255.0, green: 169.0/255.0, blue: 223.0/255.0, alpha: 1) : .black
+            let changeLabel = UILabel()
+            let change = player.getChange(attrName: attrName)
+            changeLabel.text = "\(record.first!.value) -> \(record.last!.value)(\(change))"
+            changeLabel.textColor = change >= 0 ? UIColor(red: 0, green: 170.0/255.0, blue: 144.0/255.0, alpha: 1) : UIColor(red: 203.0/255.0, green: 27.0/255.0, blue: 69.0/255.0, alpha: 1)
+            let innerStack = UIStackView(arrangedSubviews: [title, changeLabel])
             stackView.addArrangedSubview(innerStack)
             title.snp.makeConstraints { make in
                 make.width.equalToSuperview().dividedBy(3)
