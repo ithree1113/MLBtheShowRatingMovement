@@ -48,6 +48,18 @@ class DetailViewController: UIViewController {
             make.edges.equalTo(scrollView.contentLayoutGuide)
         }
         
+        let teamTitle = UILabel()
+        teamTitle.text = "Team"
+        let teamName = UILabel()
+        teamName.text = player.team.reduce("", { partialResult, teamName in
+            return partialResult.count == 0 ? teamName : partialResult + " - " + teamName
+        })
+        let teamStack = UIStackView(arrangedSubviews: [teamTitle, teamName])
+        stackView.addArrangedSubview(teamStack)
+        teamTitle.snp.makeConstraints { make in
+            make.width.equalToSuperview().dividedBy(3)
+        }
+        
         AttrName.allCases.forEach({ attrName in
             guard player.getRecord(name: attrName).count > 0 else {
                 return
