@@ -14,6 +14,7 @@ struct UpdatePackage {
 
 struct UpdateElement {
     let playerName: String
+    let teamName: String
     let updatedAttributes: [UpdatedAttribute]
 }
 

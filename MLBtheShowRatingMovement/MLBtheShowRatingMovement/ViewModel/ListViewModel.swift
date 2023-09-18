@@ -63,7 +63,7 @@ class ListViewModel: ListViewModelProtocol {
                                     createPlayer(at: updatePackage.date, from: updateElement)
                                     players = realm.objects(Player.self).where { $0.name == updateElement.playerName }
                                 }
-                                updatePlayer(players[0], at: updatePackage.date, from: updateElement)
+                                updatePlayer(players[0], in: updateElement.teamName, at: updatePackage.date, from: updateElement)
                             }
                             try! realm.write({
                                 realm.add(UpdatedUrl(urlString: urlString))
@@ -126,7 +126,12 @@ class ListViewModel: ListViewModelProtocol {
         })
     }
     
-    private func updatePlayer(_ player: Player, at date: Date, from update: UpdateElement) {
+    private func updatePlayer(_ player: Player, in team: String, at date: Date, from update: UpdateElement) {
+        if player.team.last ?? "" != team {
+            try! realm.write {
+                player.team.append(team)
+            }
+        }
         update.updatedAttributes.forEach { updatedAttribute in
             guard let attribute = player.value(forKey: updatedAttribute.name.propertyKey()) as? List<AttributeRecord> else {
                 return
@@ -174,7 +179,9 @@ class ListViewModel: ListViewModelProtocol {
                                                     value: try element.getNewRating(),
                                                     change: try element.getRatingChange())
             updatedAttributes.append(updatedAttribute)
-            let updateElement = UpdateElement(playerName: try element.getPlayerName(), updatedAttributes: updatedAttributes)
+            let updateElement = UpdateElement(playerName: try element.getPlayerName(),
+                                              teamName: try element.getTeamName(),
+                                              updatedAttributes: updatedAttributes)
             updateElements.append(updateElement)
         }
         
@@ -186,6 +193,10 @@ class ListViewModel: ListViewModelProtocol {
 fileprivate extension Element {
     func getPlayerName() throws -> String {
         return try child(0).text()
+    }
+    
+    func getTeamName() throws -> String {
+        return try child(1).text()
     }
     
     func getNewRating() throws -> String {
