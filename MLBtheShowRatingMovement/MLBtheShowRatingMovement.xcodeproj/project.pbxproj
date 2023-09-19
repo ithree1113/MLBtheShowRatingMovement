@@ -21,6 +21,7 @@
 		0444047C2AB03B0A00728DA4 /* ListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444047B2AB03B0A00728DA4 /* ListViewController.swift */; };
 		0444047F2AB0616100728DA4 /* ListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0444047E2AB0616100728DA4 /* ListViewModel.swift */; };
 		044404822AB070F800728DA4 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 044404812AB070F800728DA4 /* SnapKit */; };
+		0446A09A2AB9814600953435 /* Team.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0446A0992AB9814600953435 /* Team.swift */; };
 		2C14291F2AB5F0DB007EF198 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2C14291E2AB5F0DB007EF198 /* DetailViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +38,7 @@
 		044404742AAF1D4000728DA4 /* Date+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+Extension.swift"; sourceTree = "<group>"; };
 		0444047B2AB03B0A00728DA4 /* ListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewController.swift; sourceTree = "<group>"; };
 		0444047E2AB0616100728DA4 /* ListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListViewModel.swift; sourceTree = "<group>"; };
+		0446A0992AB9814600953435 /* Team.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Team.swift; sourceTree = "<group>"; };
 		2C14291E2AB5F0DB007EF198 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -91,6 +93,7 @@
 			isa = PBXGroup;
 			children = (
 				0444046C2AAF069500728DA4 /* Player.swift */,
+				0446A0992AB9814600953435 /* Team.swift */,
 				0444046F2AAF0EFA00728DA4 /* UpdateElement.swift */,
 				044404712AAF170E00728DA4 /* UpdateList.swift */,
 			);
@@ -211,6 +214,7 @@
 				0444046D2AAF069500728DA4 /* Player.swift in Sources */,
 				044404752AAF1D4000728DA4 /* Date+Extension.swift in Sources */,
 				044404552AAF025400728DA4 /* SceneDelegate.swift in Sources */,
+				0446A09A2AB9814600953435 /* Team.swift in Sources */,
 				044404702AAF0EFA00728DA4 /* UpdateElement.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

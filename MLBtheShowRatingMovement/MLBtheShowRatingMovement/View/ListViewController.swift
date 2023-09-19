@@ -107,15 +107,19 @@ class ListViewController: UIViewController {
     @objc private func searchBtnDidTap() {
         let alert = UIAlertController(title: "Player Search", message: nil, preferredStyle: .alert)
         alert.addTextField { $0.placeholder = "Name" }
+        alert.addTextField { $0.placeholder = "Team" }
         
         let cancalAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] action in
             self.dismiss(animated: true)
         }
         
         let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] action in
-            let playerName = alert.textFields?[0].text ?? ""
-            viewModel.searchPlayer(name: playerName)
-            self.filterAttrName = nil
+            if let playerName = alert.textFields?[0].text {
+                viewModel.searchPlayer(name: playerName)
+                self.filterAttrName = nil
+            } else if let teamName = alert.textFields?[1].text, let team = Team(rawValue: teamName) {
+                viewModel.searchPlayerInTeam(team)
+            }
         })
         alert.addAction(cancalAction)
         alert.addAction(confirmAction)

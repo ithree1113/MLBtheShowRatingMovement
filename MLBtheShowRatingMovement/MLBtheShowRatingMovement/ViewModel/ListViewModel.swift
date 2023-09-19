@@ -19,6 +19,7 @@ protocol ListViewModelProtocol {
     func getPlayer(at index: Int) -> Player?
     func addFilter(attr: AttrName?, delta: Int)
     func searchPlayer(name: String)
+    func searchPlayerInTeam(_ team: Team)
 }
 
 class ListViewModel: ListViewModelProtocol {
@@ -111,6 +112,11 @@ class ListViewModel: ListViewModelProtocol {
     
     func searchPlayer(name: String) {
         players = realm.objects(Player.self).filter { $0.name.lowercased().hasPrefix(name.lowercased()) || $0.name.lowercased().hasSuffix(name.lowercased()) }
+        listUpdated?()
+    }
+    
+    func searchPlayerInTeam(_ team: Team) {
+        players = realm.objects(Player.self).where { $0.team.contains(team.name()) }.map { $0 }
         listUpdated?()
     }
     
