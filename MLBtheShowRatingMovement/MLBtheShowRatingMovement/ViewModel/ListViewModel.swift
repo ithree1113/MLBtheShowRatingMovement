@@ -20,6 +20,7 @@ protocol ListViewModelProtocol {
     func addFilter(attr: AttrName?, delta: Int)
     func searchPlayer(name: String)
     func searchPlayerInTeam(_ team: Team)
+    func savePlayersList()
 }
 
 class ListViewModel: ListViewModelProtocol {
@@ -123,6 +124,23 @@ class ListViewModel: ListViewModelProtocol {
     func getPlayer(at index: Int) -> Player? {
         guard index < listCount else { return nil }
         return players[index]
+    }
+    
+    func savePlayersList() {
+        var csvString = "Player name, Team name, Potential\n"
+        let players = realm.objects(Player.self)
+        players.forEach { player in
+            csvString.append("\(player.name),\(player.team.first ?? ""), \n")
+        }
+        let fileManager = FileManager.default
+        do {
+            let path = try fileManager.url(for: .documentDirectory, in: .allDomainsMask, appropriateFor: nil, create: false)
+            let filePath = path.appendingPathComponent("potential.csv")
+            try csvString.write(to: filePath, atomically: true, encoding: .utf8)
+            print(filePath)
+        } catch {
+            print(error)
+        }
     }
     
     private func createPlayer(at date: Date, from update: UpdateElement) {

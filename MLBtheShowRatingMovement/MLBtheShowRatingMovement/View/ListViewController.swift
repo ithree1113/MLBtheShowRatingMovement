@@ -24,6 +24,11 @@ class ListViewController: UIViewController {
         return sb
     }()
     
+    lazy var saveBtn: UIBarButtonItem = {
+        let sb = UIBarButtonItem(barButtonSystemItem: .save, target: self, action: #selector(saveBtnDidTap))
+        return sb
+    }()
+    
     lazy var tableView: UITableView = {
         let tv = UITableView()
         tv.register(UITableViewCell.self, forCellReuseIdentifier: "defaultCell")
@@ -124,6 +129,10 @@ class ListViewController: UIViewController {
         alert.addAction(cancalAction)
         alert.addAction(confirmAction)
         present(alert, animated: true)
+    }
+    
+    @objc private func saveBtnDidTap() {
+        viewModel.savePlayersList()
     }
 }
 
