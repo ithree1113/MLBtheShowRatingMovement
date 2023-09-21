@@ -11,6 +11,12 @@ import SnapKit
 class DetailViewController: UIViewController {
 
     let player: Player
+    private let stackView: UIStackView = {
+        let sv = UIStackView()
+        sv.axis = .vertical
+        sv.spacing = 20
+        return sv
+    }()
     
     init(player: Player) {
         self.player = player
@@ -39,10 +45,6 @@ class DetailViewController: UIViewController {
             make.width.equalTo(scrollView.frameLayoutGuide)
         }
         
-        let stackView = UIStackView()
-        stackView.axis = .vertical
-        stackView.spacing = 20
-        
         scrollView.addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.edges.equalTo(scrollView.contentLayoutGuide).inset(20)
@@ -60,11 +62,21 @@ class DetailViewController: UIViewController {
             let change = player.getChange(attrName: attrName)
             changeLabel.text = "\(record.first!.value) -> \(record.last!.value)(\(change))"
             changeLabel.textColor = change >= 0 ? UIColor(red: 0, green: 170.0/255.0, blue: 144.0/255.0, alpha: 1) : UIColor(red: 203.0/255.0, green: 27.0/255.0, blue: 69.0/255.0, alpha: 1)
-            let innerStack = UIStackView(arrangedSubviews: [title, changeLabel])
-            stackView.addArrangedSubview(innerStack)
-            title.snp.makeConstraints { make in
-                make.width.equalToSuperview().dividedBy(3)
-            }
+            addArrangedSubviews(title: title, content: changeLabel)
         })
+        
+        let positionTitle = UILabel()
+        positionTitle.text = "Position Change:"
+        let positionContent = UILabel()
+        positionContent.text = player.position.reduce("", { $0.count == 0 ? $1 : $0 + " -> \($1)"})
+        addArrangedSubviews(title: positionTitle, content: positionContent)
+    }
+    
+    private func addArrangedSubviews(title: UILabel, content: UILabel) {
+        let innerStack = UIStackView(arrangedSubviews: [title, content])
+        stackView.addArrangedSubview(innerStack)
+        title.snp.makeConstraints { make in
+            make.width.equalToSuperview().dividedBy(3)
+        }
     }
 }

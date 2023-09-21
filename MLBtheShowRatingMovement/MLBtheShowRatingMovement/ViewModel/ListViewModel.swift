@@ -23,6 +23,8 @@ protocol ListViewModelProtocol {
 
 class ListViewModel: ListViewModelProtocol {
     
+    typealias WebRawData = (Date, [Element], [Element])
+    
     var listCount: Int {
         players.count
     }
@@ -59,16 +61,14 @@ class ListViewModel: ListViewModelProtocol {
                         let updatePackage = try createUpdatePackage(from: rawData)
                         DispatchQueue.main.async { [unowned self] in
                             updatePackage.updateElements.forEach { updateElement in
-                                var players = realm.objects(Player.self).where { $0.name == updateElement.playerName }
-                                if players.count == 0 {
-                                    createPlayer(at: updatePackage.date, from: updateElement)
-                                    players = realm.objects(Player.self).where { $0.name == updateElement.playerName }
+                                var player: Player
+                                if let p = realm.object(ofType: Player.self, forPrimaryKey: updateElement.playerName) {
+                                    player = p
+                                } else {
+                                    player = createPlayer(at: updatePackage.date, from: updateElement)
                                 }
-                                updatePlayer(players[0], at: updatePackage.date, from: updateElement)
+                                updatePlayer(player, at: updatePackage.date, from: updateElement)
                             }
-                            try! realm.write({
-                                realm.add(UpdatedUrl(urlString: urlString))
-                            })
                             loadedCount += 1
                             print("\(loadedCount)/\(unloadCount)")
                             if loadedCount == unloadCount {
@@ -119,7 +119,7 @@ class ListViewModel: ListViewModelProtocol {
         return players[index]
     }
     
-    private func createPlayer(at date: Date, from update: UpdateElement) {
+    private func createPlayer(at date: Date, from update: UpdateElement) -> Player {
         let player = Player(name: update.playerName)
         
         update.updatedAttributes.forEach { updatedAttribute in
@@ -131,6 +131,8 @@ class ListViewModel: ListViewModelProtocol {
         try! realm.write({
             realm.add(player)
         })
+        
+        return player
     }
     
     private func updatePlayer(_ player: Player, at date: Date, from update: UpdateElement) {
@@ -139,6 +141,9 @@ class ListViewModel: ListViewModelProtocol {
                 return
             }
             try! realm.write({
+                if update.position.count > 0 {
+                    player.position.append(update.position)
+                }
                 if attribute.count == 0 {
                     attribute.append(AttributeRecord(date: initDate, value: updatedAttribute.getInitValue()))
                 }
@@ -147,18 +152,32 @@ class ListViewModel: ListViewModelProtocol {
         }
     }
     
-    private func fetchWebData(urlString: String) throws -> (Date, [Element]) {
+    private func fetchWebData(urlString: String) throws -> WebRawData {
         let url: URL = URLComponents(string: urlString)!.url!
         let data = try Data(contentsOf: url)
         
-        guard let html = String(data: data, encoding: .utf8) else { return (Date(), []) }
+        guard let html = String(data: data, encoding: .utf8) else { return (Date(), [], []) }
+        
+        DispatchQueue.main.async { [unowned self] in
+            try! realm.write({
+                realm.add(UpdatedUrl(urlString: urlString))
+            })
+        }
+        
         let document = try SwiftSoup.parse(html)
         let rawData = try document.select("tr").array().filter{ $0.children().count == 6 }.filter{ try $0.getPlayerName() != "Player" }.filter{ try $0.child(5).text().count != 0 }
+        let positionData = try document.select("tr").array().filter{ $0.children().count == 1 }
         let dateString = try document.select("h2")[1].text()
-        return (dateFormatter.date(from: dateString)!, rawData)
+        return (dateFormatter.date(from: dateString)!, rawData, positionData)
     }
     
-    private func createUpdatePackage(from data: (Date, [Element])) throws -> UpdatePackage {
+    private func createUpdatePackage(from data: WebRawData) throws -> UpdatePackage {
+        return UpdatePackage(date: data.0,
+                             updateElements: try createUpdatePackageForAttribute(from: data) +
+                             (try createUpdatePackageForPosition(from: data)))
+    }
+    
+    private func createUpdatePackageForAttribute(from data: WebRawData) throws -> [UpdateElement] {
         var updateElements: [UpdateElement] = []
         for element in data.1 {
             var updatedAttributes: [UpdatedAttribute] = []
@@ -181,11 +200,24 @@ class ListViewModel: ListViewModelProtocol {
                                                     value: try element.getNewRating(),
                                                     change: try element.getRatingChange())
             updatedAttributes.append(updatedAttribute)
-            let updateElement = UpdateElement(playerName: try element.getPlayerName(), updatedAttributes: updatedAttributes)
+            let updateElement = UpdateElement(playerName: try element.getPlayerName(),
+                                              position: "",
+                                              updatedAttributes: updatedAttributes)
             updateElements.append(updateElement)
         }
-        
-        return UpdatePackage(date: data.0, updateElements: updateElements)
+        return updateElements
+    }
+    
+    private func createUpdatePackageForPosition(from data: WebRawData) throws -> [UpdateElement] {
+        var updateElements: [UpdateElement] = []
+        for element in data.2 {
+            let position = try element.select("strong")[0].text()
+            let team = try element.select("strong")[1].text()
+            let updateElement = UpdateElement(playerName: try element.getPlayerName(),
+                                              position: "\(position)(\(team))",
+                                              updatedAttributes: [])
+        }
+        return updateElements
     }
     
     private func batterSpecialFilter() {
@@ -238,7 +270,13 @@ class ListViewModel: ListViewModelProtocol {
 // MARK: - Element extension
 fileprivate extension Element {
     func getPlayerName() throws -> String {
-        return try child(0).text()
+        if children().count == 6 {
+            return try child(0).text()
+        } else if children().count == 1 {
+            return try select("a").text()
+        } else {
+           return ""
+        }
     }
     
     func getNewRating() throws -> String {
