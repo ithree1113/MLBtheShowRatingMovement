@@ -7,6 +7,7 @@
 
 import UIKit
 import SnapKit
+import RealmSwift
 
 class DetailViewController: UIViewController {
 
@@ -16,6 +17,12 @@ class DetailViewController: UIViewController {
         sv.axis = .vertical
         sv.spacing = 20
         return sv
+    }()
+    private lazy var potentialTextField: UITextField = {
+        let ptf = UITextField()
+        ptf.text = "\(player.potential)"
+        ptf.layer.borderColor = UIColor.clear.cgColor
+        return ptf
     }()
     
     init(player: Player) {
@@ -31,6 +38,15 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         initLayout()
         self.title = player.name
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        try! Realm().write({
+            if let potential = Int(potentialTextField.text ?? "") {
+                player.potential = potential
+            }
+        })
     }
     
     private func initLayout() {
@@ -50,6 +66,10 @@ class DetailViewController: UIViewController {
             make.edges.equalTo(scrollView.contentLayoutGuide).inset(20)
         }
         
+        let potentialTitle = UILabel()
+        potentialTitle.text = "Potential"
+        addArrangedSubviews(title: potentialTitle, content: potentialTextField)
+        
         AttrName.allCases.forEach({ attrName in
             guard player.getRecord(name: attrName).count > 0 else {
                 return
@@ -66,13 +86,13 @@ class DetailViewController: UIViewController {
         })
         
         let positionTitle = UILabel()
-        positionTitle.text = "Position Change:"
+        positionTitle.text = "Position Change"
         let positionContent = UILabel()
         positionContent.text = player.position.reduce("", { $0.count == 0 ? $1 : $0 + " -> \($1)"})
         addArrangedSubviews(title: positionTitle, content: positionContent)
     }
     
-    private func addArrangedSubviews(title: UILabel, content: UILabel) {
+    private func addArrangedSubviews<T: UIView>(title: UILabel, content: T) {
         let innerStack = UIStackView(arrangedSubviews: [title, content])
         stackView.addArrangedSubview(innerStack)
         title.snp.makeConstraints { make in
