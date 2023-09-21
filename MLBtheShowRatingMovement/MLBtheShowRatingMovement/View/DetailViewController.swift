@@ -69,6 +69,12 @@ class DetailViewController: UIViewController {
         let potentialTitle = UILabel()
         potentialTitle.text = "Potential"
         addArrangedSubviews(title: potentialTitle, content: potentialTextField)
+
+        let teamTitle = UILabel()
+        teamTitle.text = "Team"
+        let teamName = UILabel()
+        teamName.text = player.team.reduce("", { $0.count == 0 ? $1 : $0 + " -> \($1)"})
+        addArrangedSubviews(title: teamTitle, content: teamName)
         
         AttrName.allCases.forEach({ attrName in
             guard player.getRecord(name: attrName).count > 0 else {

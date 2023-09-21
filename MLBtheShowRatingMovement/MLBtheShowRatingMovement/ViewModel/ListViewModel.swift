@@ -19,6 +19,8 @@ protocol ListViewModelProtocol {
     func getPlayer(at index: Int) -> Player?
     func addFilter(attr: AttrName?, delta: Int)
     func searchPlayer(name: String)
+    func searchPlayerInTeam(_ team: Team)
+    func savePlayersList()
 }
 
 class ListViewModel: ListViewModelProtocol {
@@ -114,9 +116,31 @@ class ListViewModel: ListViewModelProtocol {
         listUpdated?()
     }
     
+    func searchPlayerInTeam(_ team: Team) {
+        players = realm.objects(Player.self).where { $0.team.contains(team.name()) }.map { $0 }
+        listUpdated?()
+    }
+    
     func getPlayer(at index: Int) -> Player? {
         guard index < listCount else { return nil }
         return players[index]
+    }
+    
+    func savePlayersList() {
+        var csvString = "Player name, Team name, Potential\n"
+        let players = realm.objects(Player.self)
+        players.forEach { player in
+            csvString.append("\(player.name),\(player.team.first ?? ""), \n")
+        }
+        let fileManager = FileManager.default
+        do {
+            let path = try fileManager.url(for: .documentDirectory, in: .allDomainsMask, appropriateFor: nil, create: false)
+            let filePath = path.appendingPathComponent("potential.csv")
+            try csvString.write(to: filePath, atomically: true, encoding: .utf8)
+            print(filePath)
+        } catch {
+            print(error)
+        }
     }
     
     private func createPlayer(at date: Date, from update: UpdateElement) -> Player {
@@ -136,14 +160,23 @@ class ListViewModel: ListViewModelProtocol {
     }
     
     private func updatePlayer(_ player: Player, at date: Date, from update: UpdateElement) {
+        if player.team.last ?? "" != update.teamName {
+            try! realm.write {
+                player.team.append(update.teamName )
+            }
+        }
+        
+        if update.position.count > 0 {
+            try! realm.write {
+                player.position.append(update.position)
+            }
+        }
+        
         update.updatedAttributes.forEach { updatedAttribute in
             guard let attribute = player.value(forKey: updatedAttribute.name.propertyKey()) as? List<AttributeRecord> else {
                 return
             }
             try! realm.write({
-                if update.position.count > 0 {
-                    player.position.append(update.position)
-                }
                 if attribute.count == 0 {
                     attribute.append(AttributeRecord(date: initDate, value: updatedAttribute.getInitValue()))
                 }
@@ -201,6 +234,7 @@ class ListViewModel: ListViewModelProtocol {
                                                     change: try element.getRatingChange())
             updatedAttributes.append(updatedAttribute)
             let updateElement = UpdateElement(playerName: try element.getPlayerName(),
+                                              teamName: try element.getTeamName(),
                                               position: "",
                                               updatedAttributes: updatedAttributes)
             updateElements.append(updateElement)
@@ -214,6 +248,7 @@ class ListViewModel: ListViewModelProtocol {
             let position = try element.select("strong")[0].text()
             let team = try element.select("strong")[1].text()
             let updateElement = UpdateElement(playerName: try element.getPlayerName(),
+                                              teamName: "",
                                               position: "\(position)(\(team))",
                                               updatedAttributes: [])
         }
@@ -277,6 +312,10 @@ fileprivate extension Element {
         } else {
            return ""
         }
+    }
+    
+    func getTeamName() throws -> String {
+        return try child(1).text()
     }
     
     func getNewRating() throws -> String {
