@@ -251,6 +251,7 @@ class ListViewModel: ListViewModelProtocol {
                                               teamName: "",
                                               position: "\(position)(\(team))",
                                               updatedAttributes: [])
+            updateElements.append(updateElement)
         }
         return updateElements
     }
