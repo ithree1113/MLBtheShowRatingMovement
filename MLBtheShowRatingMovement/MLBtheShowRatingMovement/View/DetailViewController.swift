@@ -91,11 +91,16 @@ class DetailViewController: UIViewController {
             addArrangedSubviews(title: title, content: changeLabel)
         })
         
-        let positionTitle = UILabel()
-        positionTitle.text = "Position Change"
-        let positionContent = UILabel()
-        positionContent.text = player.position.reduce("", { $0.count == 0 ? $1 : $0 + " -> \($1)"})
-        addArrangedSubviews(title: positionTitle, content: positionContent)
+        let positionChange = player.position.reduce("", { $0.count == 0 ? $1 : $0 + " -> \($1)"})
+        if positionChange.count > 0 {
+            let positionTitle = UILabel()
+            positionTitle.numberOfLines = 2
+            positionTitle.text = "Position\nChange"
+            let positionContent = UILabel()
+            positionContent.numberOfLines = 0
+            positionContent.text = player.position.reduce("", { $0.count == 0 ? $1 : $0 + " -> \($1)"})
+            addArrangedSubviews(title: positionTitle, content: positionContent)
+        }
     }
     
     private func addArrangedSubviews<T: UIView>(title: UILabel, content: T) {
