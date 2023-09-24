@@ -160,7 +160,7 @@ class ListViewModel: ListViewModelProtocol {
     }
     
     private func updatePlayer(_ player: Player, at date: Date, from update: UpdateElement) {
-        if player.team.last ?? "" != update.teamName {
+        if update.teamName.count > 0, player.team.last ?? "" != update.teamName {
             try! realm.write {
                 player.team.append(update.teamName )
             }
