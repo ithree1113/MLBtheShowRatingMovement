@@ -112,7 +112,7 @@ class ListViewModel: ListViewModelProtocol {
     }
     
     func searchPlayer(name: String) {
-        players = realm.objects(Player.self).filter { $0.name.lowercased().hasPrefix(name.lowercased()) || $0.name.lowercased().hasSuffix(name.lowercased()) }
+        players = realm.objects(Player.self).where { $0.name.contains(name, options: .caseInsensitive) }.map { $0 }
         listUpdated?()
     }
     
