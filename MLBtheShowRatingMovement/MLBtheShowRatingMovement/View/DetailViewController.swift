@@ -73,7 +73,7 @@ class DetailViewController: UIViewController {
         let teamTitle = UILabel()
         teamTitle.text = "Team"
         let teamName = UILabel()
-        teamName.text = player.team.reduce("", { $0.count == 0 ? $1 : $0 + " -> \($1)"})
+        teamName.text = player.team.reduce("", { $0.count == 0 ? $1 + "(\(String(describing: player.ratingChangedByTeam[$1])))" : $0 + " -> \($1)(\(String(describing: player.ratingChangedByTeam[$1]))"})
         addArrangedSubviews(title: teamTitle, content: teamName)
         
         AttrName.allCases.forEach({ attrName in

@@ -181,6 +181,9 @@ class ListViewModel: ListViewModelProtocol {
                     attribute.append(AttributeRecord(date: initDate, value: updatedAttribute.getInitValue()))
                 }
                 attribute.append(AttributeRecord(date: date, value: Int(updatedAttribute.value)!))
+                if updatedAttribute.name == .rating, let changed = Int(updatedAttribute.change) {
+                    player.ratingChangedByTeam[update.teamName] = (player.ratingChangedByTeam[update.teamName] ?? 0) + changed
+                }
             })
         }
     }

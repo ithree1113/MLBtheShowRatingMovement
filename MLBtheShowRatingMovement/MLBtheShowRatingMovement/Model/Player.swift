@@ -12,6 +12,7 @@ class Player: Object {
     @Persisted(primaryKey: true) var name: String
     @Persisted var potential: Int
     @Persisted var team = List<String>()
+    @Persisted var ratingChangedByTeam: Map<String, Int>
     @Persisted var position = List<String>()
     @Persisted var rating = List<AttributeRecord>()
     // Bating
