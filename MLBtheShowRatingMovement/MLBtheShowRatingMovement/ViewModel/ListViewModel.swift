@@ -117,7 +117,7 @@ class ListViewModel: ListViewModelProtocol {
     }
     
     func searchPlayerInTeam(_ team: Team) {
-        players = realm.objects(Player.self).where { $0.team.contains(team.name()) }.map { $0 }
+        players = realm.objects(Player.self).where { $0.team.contains(team.name()) }.sorted(by: { $0.getLastValue(attrName: .rating) >= $1.getLastValue(attrName: .rating) })
         listUpdated?()
     }
     
