@@ -9,9 +9,14 @@ import UIKit
 import SnapKit
 import RealmSwift
 
+protocol DetailViewControllerDelegate: AnyObject {
+    func showNextPlayer(on vc: DetailViewController)
+}
+
 class DetailViewController: UIViewController {
 
-    let player: Player
+    weak var delegate: DetailViewControllerDelegate?
+    private let player: Player
     private let stackView: UIStackView = {
         let sv = UIStackView()
         sv.axis = .vertical
@@ -24,6 +29,11 @@ class DetailViewController: UIViewController {
         ptf.layer.borderColor = UIColor.clear.cgColor
         ptf.delegate = self
         return ptf
+    }()
+    private lazy var nextBtn: UIBarButtonItem = {
+        let nb = UIBarButtonItem(title: "Next", style: .plain, target: self, action: #selector(nextBtnDidTap))
+        
+        return nb
     }()
     
     init(player: Player) {
@@ -39,6 +49,7 @@ class DetailViewController: UIViewController {
         super.viewDidLoad()
         initLayout()
         self.title = player.name
+        navigationItem.rightBarButtonItem = nextBtn
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -111,6 +122,10 @@ class DetailViewController: UIViewController {
         title.snp.makeConstraints { make in
             make.width.equalToSuperview().dividedBy(3)
         }
+    }
+    
+    @objc private func nextBtnDidTap() {
+        delegate?.showNextPlayer(on: self)
     }
 }
 

@@ -13,6 +13,7 @@ class ListViewController: UIViewController {
     
     var viewModel: ListViewModelProtocol
     private var filterAttrName: AttrName?
+    private var indexPath: IndexPath?
     
     lazy var addingFilterBtn: UIBarButtonItem = {
         let afb = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addingFilterBtnDidTap))
@@ -104,6 +105,7 @@ class ListViewController: UIViewController {
             let delta = Int(alert.textFields?[1].text ?? "") ?? 0
             viewModel.addFilter(attr: attr, delta: delta)
             self.filterAttrName = attr
+            indexPath = nil
         })
         alert.addAction(cancalAction)
         alert.addAction(confirmAction)
@@ -126,6 +128,7 @@ class ListViewController: UIViewController {
                 viewModel.searchPlayer(name: playerName)
                 self.filterAttrName = nil
             }
+            indexPath = nil
         })
         alert.addAction(cancalAction)
         alert.addAction(confirmAction)
@@ -167,6 +170,19 @@ extension ListViewController: UITableViewDelegate {
             return
         }
         let detail = DetailViewController(player: player)
+        detail.delegate = self
         navigationController?.pushViewController(detail, animated: true)
+        self.indexPath = indexPath
     }
 }
+
+extension ListViewController: DetailViewControllerDelegate {
+    func showNextPlayer(on vc: DetailViewController) {
+        guard var indexPath = self.indexPath else { return }
+        indexPath.item += 1
+        navigationController?.popViewController(animated: false)
+        guard indexPath.item < viewModel.listCount else { return }
+        tableView(tableView, didSelectRowAt: indexPath)
+    }
+}
+
