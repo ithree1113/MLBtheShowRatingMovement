@@ -60,6 +60,7 @@ class ListViewController: UIViewController {
         viewModel.listUpdated = { [unowned self] in
             self.title = "\(viewModel.listCount)"
             tableView.reloadData()
+            tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
         viewModel.loadingStatusChanged = { [unowned self] isLoading in
             if isLoading {
