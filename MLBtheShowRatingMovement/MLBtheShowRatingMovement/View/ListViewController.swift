@@ -119,9 +119,9 @@ class ListViewController: UIViewController {
         }
         
         let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] action in
-            if let teamName = alert.textFields?[1].text, let team = Team(rawValue: teamName) {
+            if let teamName = alert.textFields?[0].text, let team = Team(rawValue: teamName) {
                 viewModel.searchPlayerInTeam(team)
-            } else if let playerName = alert.textFields?[0].text {
+            } else if let playerName = alert.textFields?[1].text {
                 viewModel.searchPlayer(name: playerName)
                 self.filterAttrName = nil
             }
