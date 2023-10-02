@@ -22,6 +22,7 @@ class DetailViewController: UIViewController {
         let ptf = UITextField()
         ptf.text = "\(player.potential)"
         ptf.layer.borderColor = UIColor.clear.cgColor
+        ptf.delegate = self
         return ptf
     }()
     
@@ -43,7 +44,7 @@ class DetailViewController: UIViewController {
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         try! Realm().write({
-            if let potential = Int(potentialTextField.text ?? "") {
+            if let potential = Int(potentialTextField.text ?? "0") {
                 player.potential = potential
             }
         })
@@ -109,6 +110,15 @@ class DetailViewController: UIViewController {
         stackView.addArrangedSubview(innerStack)
         title.snp.makeConstraints { make in
             make.width.equalToSuperview().dividedBy(3)
+        }
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension DetailViewController: UITextFieldDelegate {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        if let text = textField.text, text == "0" {
+            textField.text = ""
         }
     }
 }
