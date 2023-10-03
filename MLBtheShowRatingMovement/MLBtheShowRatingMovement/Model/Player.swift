@@ -61,11 +61,7 @@ class Player: Object {
     }
     
     func getChange(attrName: AttrName) -> Int {
-        guard let list = value(forKey: attrName.propertyKey()) as? List<AttributeRecord> else {
-            return 0
-        }
-        let sortedList = list.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
-        return min(sortedList.last!.value, 99) - min(sortedList.first!.value, 99) 
+        return min(getLastValue(attrName: attrName), 99) - min(getFirstValue(attrName: attrName), 99) 
     }
     
     func getFirstValue(attrName: AttrName) -> Int {
