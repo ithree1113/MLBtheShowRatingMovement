@@ -61,7 +61,9 @@ class ListViewController: UIViewController {
         viewModel.listUpdated = { [unowned self] in
             self.title = "\(viewModel.listCount)"
             tableView.reloadData()
-            tableView.setContentOffset(.zero, animated: true)
+            if viewModel.listCount != 0 {
+                tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
+            }
         }
         viewModel.loadingStatusChanged = { [unowned self] isLoading in
             if isLoading {
