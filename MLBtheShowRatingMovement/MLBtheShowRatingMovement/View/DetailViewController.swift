@@ -97,6 +97,25 @@ class DetailViewController: UIViewController {
             title.text = attrName.rawValue
             let changeLabel = UILabel()
             changeLabel.text = "\(player.getLastValue(attrName: attrName))"
+            switch attrName {
+            case .conL, .conR, .sta, .pitClu:
+                title.textColor = UIColor(red: 127.0/255.0, green: 200.0/255.0, blue: 238.0/255.0, alpha: 1)
+                changeLabel.textColor = UIColor(red: 127.0/255.0, green: 200.0/255.0, blue: 238.0/255.0, alpha: 1)
+            case .pwrL, .pwrR, .h9, .hr9:
+                title.textColor = UIColor(red: 0, green: 160.0/255.0, blue: 1, alpha: 1)
+                changeLabel.textColor = UIColor(red: 0, green: 160.0/255.0, blue: 1, alpha: 1)
+            case .vis, .disc, .k9, .bb9:
+                title.textColor = UIColor(red: 227.0/255.0, green: 90.0/255.0, blue: 102.0/255.0, alpha: 1)
+                changeLabel.textColor = UIColor(red: 227.0/255.0, green: 90.0/255.0, blue: 102.0/255.0, alpha: 1)
+            case .armAcc, .armStr:
+                title.textColor = UIColor(red: 65.0/255.0, green: 204.0/255.0, blue: 69.0/255.0, alpha: 1)
+                changeLabel.textColor = UIColor(red: 65.0/255.0, green: 204.0/255.0, blue: 69.0/255.0, alpha: 1)
+            case .reac, .fld:
+                title.textColor = UIColor(red: 0, green: 170.0/255.0, blue: 144.0/255.0, alpha: 1)
+                changeLabel.textColor = UIColor(red: 0, green: 170.0/255.0, blue: 144.0/255.0, alpha: 1)
+            default:
+                break
+            }
             addArrangedSubviews(title: title, content: changeLabel)
         })
         
