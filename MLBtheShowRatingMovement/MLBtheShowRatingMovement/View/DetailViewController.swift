@@ -96,7 +96,7 @@ class DetailViewController: UIViewController {
             let title = UILabel()
             title.text = attrName.rawValue
             let changeLabel = UILabel()
-            changeLabel.text = "\(player.getLastValue(attrName: attrName))"
+            changeLabel.text = "\(min(player.getLastValue(attrName: attrName), 99))"
             switch attrName {
             case .conL, .conR, .sta, .pitClu:
                 title.textColor = UIColor(red: 127.0/255.0, green: 200.0/255.0, blue: 238.0/255.0, alpha: 1)
