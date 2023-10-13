@@ -52,23 +52,24 @@ enum AttrName: String, CaseIterable {
     case bnt = "BNT"
     case drgBnt = "DRG BNT"
     case dur = "DUR"
+    // Running
+    case spd = "SPD"
     // Fielding
     case armStr = "ARM STR"
     case armAcc = "ARM ACC"
-    case fld = "FLD"
     case reac = "REAC"
+    case fld = "FLD"
     case blk = "BLK"
     // Running
-    case spd = "SPD"
     case stl = "STL"
     case brAgg = "BR AGG"
     // Pitching
     case sta = "STA"
+    case pitClu = "PIT CLU"
     case h9 = "H/9"
     case hr9 = "HR/9"
-    case bb9 = "BB/9"
     case k9 = "K/9"
-    case pitClu = "PIT CLU"
+    case bb9 = "BB/9"
     case ctrl = "CTRL"
     case vel = "VEL"
     case brk = "BRK"
