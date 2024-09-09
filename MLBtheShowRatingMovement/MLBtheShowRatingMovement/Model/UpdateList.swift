@@ -17,28 +17,25 @@ class UpdatedUrl: Object {
     }
 }
 
-let updateList: [String] = ["https://mlb23.theshow.com/roster_updates/2", // 0428
-                            "https://mlb23.theshow.com/roster_updates/3", // 0505
-                            "https://mlb23.theshow.com/roster_updates/4", // 0512
-                            "https://mlb23.theshow.com/roster_updates/5", // 0519
-                            "https://mlb23.theshow.com/roster_updates/6", // 0525
-                            "https://mlb23.theshow.com/roster_updates/7", // 0602
-                            "https://mlb23.theshow.com/roster_updates/8", // 0609
-                            "https://mlb23.theshow.com/roster_updates/9", // 0615
-                            "https://mlb23.theshow.com/roster_updates/10",// 0623
-                            "https://mlb23.theshow.com/roster_updates/11",// 0630
-                            "https://mlb23.theshow.com/roster_updates/13",// 0710
-                            "https://mlb23.theshow.com/roster_updates/15",// 0724
-                            "https://mlb23.theshow.com/roster_updates/16",// 0802
-                            "https://mlb23.theshow.com/roster_updates/17",// 0811
-                            "https://mlb23.theshow.com/roster_updates/18",// 0818
-                            "https://mlb23.theshow.com/roster_updates/19",// 0825
-                            "https://mlb23.theshow.com/roster_updates/20",// 0831
-                            "https://mlb23.theshow.com/roster_updates/21",// 0908
-                            "https://mlb23.theshow.com/roster_updates/22",// 0915
-                            "https://mlb23.theshow.com/roster_updates/23",// 0922
-                            "https://mlb23.theshow.com/roster_updates/24",// 0929
-                            "https://mlb23.theshow.com/roster_updates/25" // 1006
+let updateList: [String] = ["https://mlb24.theshow.com/roster_updates/1",  // 0322
+                            "https://mlb24.theshow.com/roster_updates/2",  // 0405
+                            "https://mlb24.theshow.com/roster_updates/3",  // 0419
+                            "https://mlb24.theshow.com/roster_updates/4",  // 0426
+                            "https://mlb24.theshow.com/roster_updates/5",  // 0503
+                            "https://mlb24.theshow.com/roster_updates/6",  // 0510
+                            "https://mlb24.theshow.com/roster_updates/7",  // 0517
+                            "https://mlb24.theshow.com/roster_updates/8",  // 0523
+                            "https://mlb24.theshow.com/roster_updates/9",  // 0531
+                            "https://mlb24.theshow.com/roster_updates/10", // 0607
+                            "https://mlb24.theshow.com/roster_updates/11", // 0614
+                            "https://mlb24.theshow.com/roster_updates/12", // 0621
+                            "https://mlb24.theshow.com/roster_updates/13", // 0628
+                            "https://mlb24.theshow.com/roster_updates/14", // 0712
+                            "https://mlb24.theshow.com/roster_updates/15", // 0726
+                            "https://mlb24.theshow.com/roster_updates/16", // 0802
+                            "https://mlb24.theshow.com/roster_updates/17", // 0816
+                            "https://mlb24.theshow.com/roster_updates/18", // 0829
+                            "https://mlb24.theshow.com/roster_updates/19"  // 0906
 ]
 /*
  override func viewDidLoad() {
