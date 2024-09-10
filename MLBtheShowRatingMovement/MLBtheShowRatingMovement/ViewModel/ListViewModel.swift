@@ -256,8 +256,8 @@ class ListViewModel: ListViewModelProtocol {
     
     private func batterSpecialFilter() {
         let conditions: [AttrName] = [.conR, .conL, .pwrR, .pwrL]
-        let standards: [Int] = [25, 20]
-        let matchCounts: [Int] = [1, 2]
+        let standards: [Int] = [1]
+        let matchCounts: [Int] = [3]
 
         var final: Set<Player> = Set()
         for index in 0..<standards.count {
@@ -266,7 +266,7 @@ class ListViewModel: ListViewModelProtocol {
                 for condition in conditions {
                     if player.getRecord(name: condition).count == 0 { continue }
                     if standards[index] >= 0 {
-                        if abs(player.getChange(attrName: condition)) >= standards[index] { matchCount += 1 }
+                        if player.getChange(attrName: condition) >= standards[index] { matchCount += 1 }
                     }
                     if matchCount == matchCounts[index] { return true }
                 }
