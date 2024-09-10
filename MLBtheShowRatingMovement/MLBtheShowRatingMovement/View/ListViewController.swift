@@ -124,11 +124,11 @@ class ListViewController: UIViewController {
         }
         
         let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] action in
+            self.filterAttrName = nil
             if let teamName = alert.textFields?[0].text, let team = Team(rawValue: teamName) {
                 viewModel.searchPlayerInTeam(team)
             } else if let playerName = alert.textFields?[1].text {
                 viewModel.searchPlayer(name: playerName)
-                self.filterAttrName = nil
             }
             indexPath = nil
         })
