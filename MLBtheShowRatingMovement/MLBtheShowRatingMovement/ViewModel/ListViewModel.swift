@@ -92,10 +92,12 @@ class ListViewModel: ListViewModelProtocol {
         } else {
             players = realm.objects(Player.self).filter { player in
                 guard let attr = attr, player.getRecord(name: attr).count > 0 else { return false }
-                if delta >= 0 {
+                if delta > 0 {
                     return player.getChange(attrName: attr) >= delta
-                } else {
+                } else if delta < 0 {
                     return player.getChange(attrName: attr) <= delta
+                } else {
+                    return player.getChange(attrName: attr) != 0
                 }
             }
             .sorted(by: { player1, player2 in
