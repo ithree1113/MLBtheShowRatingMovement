@@ -38,7 +38,7 @@ class ListViewController: UIViewController {
         return tv
     }()
     
-    private let lodingView: UIActivityIndicatorView = {
+    private let loadingView: UIActivityIndicatorView = {
         let lv = UIActivityIndicatorView(style: .large)
         lv.color = .black
         return lv
@@ -67,9 +67,9 @@ class ListViewController: UIViewController {
         }
         viewModel.loadingStatusChanged = { [unowned self] isLoading in
             if isLoading {
-                lodingView.startAnimating()
+                loadingView.startAnimating()
             } else {
-                lodingView.stopAnimating()
+                loadingView.stopAnimating()
             }
         }
         viewModel.fetchWebDataAndWriteIntoDatabase()
@@ -86,8 +86,8 @@ class ListViewController: UIViewController {
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         
-        view.addSubview(lodingView)
-        lodingView.snp.makeConstraints { make in
+        view.addSubview(loadingView)
+        loadingView.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
     }
