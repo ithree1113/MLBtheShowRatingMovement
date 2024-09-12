@@ -50,6 +50,8 @@ class DetailViewController: UIViewController {
         initLayout()
         self.title = player.name
         navigationItem.rightBarButtonItem = nextBtn
+        navigationController?.interactivePopGestureRecognizer?.delegate = self
+        navigationController?.interactivePopGestureRecognizer?.isEnabled = true
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -136,4 +138,8 @@ extension DetailViewController: UITextFieldDelegate {
             textField.text = ""
         }
     }
+}
+
+extension DetailViewController: UIGestureRecognizerDelegate {
+    
 }
