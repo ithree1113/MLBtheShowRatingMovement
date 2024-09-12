@@ -104,9 +104,9 @@ class ListViewController: UIViewController {
         
         let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] action in
             let attr = AttrName(rawValue: alert.textFields?[0].text ?? "")
+            self.filterAttrName = attr
             let delta = Int(alert.textFields?[1].text ?? "") ?? 0
             viewModel.addFilter(attr: attr, delta: delta)
-            self.filterAttrName = attr
             indexPath = nil
         })
         alert.addAction(cancalAction)
