@@ -19,7 +19,7 @@ protocol ListViewModelProtocol {
     func getPlayer(at index: Int) -> Player?
     func addFilter(attr: AttrName?, delta: Int)
     func searchPlayer(name: String)
-    func searchPlayerInTeam(_ team: Team)
+    func searchPlayerInTeam(_ team: String)
     func savePlayersList()
 }
 
@@ -118,8 +118,8 @@ class ListViewModel: ListViewModelProtocol {
         listUpdated?()
     }
     
-    func searchPlayerInTeam(_ team: Team) {
-        players = realm.objects(Player.self).where { $0.team.contains(team.name()) }.sorted(by: { $0.getLastValue(attrName: .rating) >= $1.getLastValue(attrName: .rating) })
+    func searchPlayerInTeam(_ team: String) {
+        players = realm.objects(Player.self).where { $0.team.contains(team) }.sorted(by: { $0.getLastValue(attrName: .rating) >= $1.getLastValue(attrName: .rating) })
         listUpdated?()
     }
     

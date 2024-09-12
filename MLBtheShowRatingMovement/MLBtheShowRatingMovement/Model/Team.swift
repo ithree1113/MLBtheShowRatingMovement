@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum Team: String {
+enum Team: String, CaseIterable {
     case bal
     case bos
     case nyy
