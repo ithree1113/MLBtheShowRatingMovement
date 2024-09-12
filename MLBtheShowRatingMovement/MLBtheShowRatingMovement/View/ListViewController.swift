@@ -77,6 +77,37 @@ class ListViewController: UIViewController {
         return tnp
     }()
     
+    private lazy var filterAlert: UIAlertController = {
+        let fa = UIAlertController(title: "Movement Filter", message: nil, preferredStyle: .alert)
+        fa.addTextField { [unowned self] textfield in
+            textfield.placeholder = "Attribute"
+            textfield.inputView = attributePicker
+        }
+        fa.addTextField { $0.placeholder = "Delta" }
+        
+        let cancalAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] action in
+            self.dismiss(animated: true)
+        }
+        
+        let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] action in
+            let attr = AttrName(rawValue: filterAlert.textFields?[0].text ?? "")
+            self.filterAttrName = attr
+            let delta = Int(filterAlert.textFields?[1].text ?? "") ?? 0
+            viewModel.addFilter(attr: attr, delta: delta)
+            indexPath = nil
+        })
+        fa.addAction(cancalAction)
+        fa.addAction(confirmAction)
+        return fa
+    }()
+    
+    private lazy var attributePicker: UIPickerView = {
+        let ap = UIPickerView()
+        ap.dataSource = self
+        ap.delegate = self
+        return ap
+    }()
+    
     // MARK: Init
     init(viewModel: ListViewModelProtocol) {
         self.viewModel = viewModel
@@ -127,24 +158,7 @@ class ListViewController: UIViewController {
     
     // MARK: Action
     @objc private func addingFilterBtnDidTap() {
-        let alert = UIAlertController(title: "Movement Filter", message: nil, preferredStyle: .alert)
-        alert.addTextField { $0.placeholder = "Attribute" }
-        alert.addTextField { $0.placeholder = "Delta" }
-        
-        let cancalAction = UIAlertAction(title: "Cancel", style: .cancel) { [unowned self] action in
-            self.dismiss(animated: true)
-        }
-        
-        let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] action in
-            let attr = AttrName(rawValue: alert.textFields?[0].text ?? "")
-            self.filterAttrName = attr
-            let delta = Int(alert.textFields?[1].text ?? "") ?? 0
-            viewModel.addFilter(attr: attr, delta: delta)
-            indexPath = nil
-        })
-        alert.addAction(cancalAction)
-        alert.addAction(confirmAction)
-        present(alert, animated: true)
+        present(filterAlert, animated: true)
     }
     
     @objc private func searchBtnDidTap() {
@@ -211,6 +225,8 @@ extension ListViewController: UIPickerViewDataSource {
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView === teamNamePicker {
             return Team.allCases.count
+        } else if pickerView === attributePicker {
+            return AttrName.allCases.count
         }
         
         return 0
@@ -222,6 +238,8 @@ extension ListViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView === teamNamePicker {
             return Team.allCases[row].name()
+        } else if pickerView === attributePicker {
+            return AttrName.allCases[row].rawValue
         }
         return nil
     }
@@ -229,6 +247,8 @@ extension ListViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView === teamNamePicker {
             searchAlert.textFields?[0].text = Team.allCases[row].name()
+        } else if pickerView === attributePicker {
+            filterAlert.textFields?[0].text = AttrName.allCases[row].rawValue
         }
     }
 }
