@@ -93,11 +93,12 @@ class DetailViewController: UIViewController {
             guard player.getRecord(name: attrName).count > 0 else {
                 return
             }
+            let change = player.getChange(attrName: attrName)
+            if change == 0 { return }
             let title = UILabel()
             title.text = attrName.rawValue
             title.textColor = attrName.rawValue == "Rating" ? UIColor(red: 46.0/255.0, green: 169.0/255.0, blue: 223.0/255.0, alpha: 1) : .black
             let changeLabel = UILabel()
-            let change = player.getChange(attrName: attrName)
             changeLabel.text = "\(player.getFirstValue(attrName: attrName)) -> \(player.getLastValue(attrName: attrName))(\(change))"
             changeLabel.textColor = change >= 0 ? UIColor(red: 0, green: 170.0/255.0, blue: 144.0/255.0, alpha: 1) : UIColor(red: 203.0/255.0, green: 27.0/255.0, blue: 69.0/255.0, alpha: 1)
             addArrangedSubviews(title: title, content: changeLabel)
