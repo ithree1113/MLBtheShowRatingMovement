@@ -69,7 +69,7 @@ class Player: Object {
             return 0
         }
         let sortedList = list.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
-        return sortedList.first!.value
+        return sortedList.first?.value ?? 0
     }
     
     func getLastValue(attrName: AttrName) -> Int {
@@ -77,7 +77,7 @@ class Player: Object {
             return 0
         }
         let sortedList = list.sorted(by: { $0.date.compare($1.date) == .orderedAscending })
-        return sortedList.last!.value
+        return sortedList.last?.value ?? 0
     }
 }
 
