@@ -58,7 +58,7 @@ class ListViewController: UIViewController {
         
         let confirmAction = UIAlertAction(title: "Confirm", style: .default, handler: { [unowned self] action in
             self.filterAttrName = nil
-            if let teamName = searchAlert.textFields?[0].text {
+            if let teamName = searchAlert.textFields?[0].text, teamName.count > 0 {
                 viewModel.searchPlayerInTeam(teamName)
             } else if let playerName = searchAlert.textFields?[1].text {
                 viewModel.searchPlayer(name: playerName)
@@ -224,7 +224,7 @@ extension ListViewController: UIPickerViewDataSource {
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
         if pickerView === teamNamePicker {
-            return Team.allCases.count
+            return Team.allCases.count + 1
         } else if pickerView === attributePicker {
             return AttrName.allCases.count
         }
@@ -237,7 +237,7 @@ extension ListViewController: UIPickerViewDataSource {
 extension ListViewController: UIPickerViewDelegate {
     func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
         if pickerView === teamNamePicker {
-            return Team.allCases[row].name()
+            return row < Team.allCases.count ? Team.allCases[row].name() : ""
         } else if pickerView === attributePicker {
             return AttrName.allCases[row].rawValue
         }
@@ -246,7 +246,7 @@ extension ListViewController: UIPickerViewDelegate {
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         if pickerView === teamNamePicker {
-            searchAlert.textFields?[0].text = Team.allCases[row].name()
+            searchAlert.textFields?[0].text = row < Team.allCases.count ? Team.allCases[row].name() : nil
         } else if pickerView === attributePicker {
             filterAlert.textFields?[0].text = AttrName.allCases[row].rawValue
         }
